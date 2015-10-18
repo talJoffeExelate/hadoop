@@ -218,58 +218,63 @@ public class GenericOptionsParser {
   }
 
   /**
-   * Specify properties of each generic option
+   * Specify properties of each generic option.
+   * <i>Important</i?: as {@link OptionBuilder} is not thread safe, subclasses
+   * must synchronized use on {code OptionBuilder.class.
    */
   @SuppressWarnings("static-access")
-  private static synchronized Options buildGeneralOptions(Options opts) {
-    Option fs = OptionBuilder.withArgName("file:///|hdfs://namenode:port")
-        .hasArg()
-        .withDescription("specify default filesystem URL to use, "
-        + "overrides 'fs.defaultFS' property from configurations.")
-        .create("fs");
-    Option jt = OptionBuilder.withArgName("local|resourcemanager:port")
-    .hasArg()
-    .withDescription("specify a ResourceManager")
-    .create("jt");
-    Option oconf = OptionBuilder.withArgName("configuration file")
-    .hasArg()
-    .withDescription("specify an application configuration file")
-    .create("conf");
-    Option property = OptionBuilder.withArgName("property=value")
-    .hasArg()
-    .withDescription("use value for given property")
-    .create('D');
-    Option libjars = OptionBuilder.withArgName("paths")
-    .hasArg()
-    .withDescription("comma separated jar files to include in the classpath.")
-    .create("libjars");
-    Option files = OptionBuilder.withArgName("paths")
-    .hasArg()
-    .withDescription("comma separated files to be copied to the " +
-           "map reduce cluster")
-    .create("files");
-    Option archives = OptionBuilder.withArgName("paths")
-    .hasArg()
-    .withDescription("comma separated archives to be unarchived" +
-                     " on the compute machines.")
-    .create("archives");
-    
-    // file with security tokens
-    Option tokensFile = OptionBuilder.withArgName("tokensFile")
-    .hasArg()
-    .withDescription("name of the file with the tokens")
-    .create("tokenCacheFile");
+  protected Options buildGeneralOptions(Options opts) {
+    synchronized (OptionBuilder.class) {
+      Option fs = OptionBuilder.withArgName("file:///|hdfs://namenode:port")
+          .hasArg()
+          .withDescription("specify default filesystem URL to use, "
+          + "overrides 'fs.defaultFS' property from configurations.")
+          .create("fs");
+      Option jt = OptionBuilder.withArgName("local|resourcemanager:port")
+      .hasArg()
+      .withDescription("specify a ResourceManager")
+      .create("jt");
+      Option oconf = OptionBuilder.withArgName("configuration file")
+      .hasArg()
+      .withDescription("specify an application configuration file")
+      .create("conf");
+      Option property = OptionBuilder.withArgName("property=value")
+      .hasArg()
+      .withDescription("use value for given property")
+      .create('D');
+      Option libjars = OptionBuilder.withArgName("paths")
+      .hasArg()
+      .withDescription("comma separated jar files to include in the classpath.")
+      .create("libjars");
+      Option files = OptionBuilder.withArgName("paths")
+      .hasArg()
+      .withDescription("comma separated files to be copied to the " +
+             "map reduce cluster")
+      .create("files");
+      Option archives = OptionBuilder.withArgName("paths")
+      .hasArg()
+      .withDescription("comma separated archives to be unarchived" +
+                       " on the compute machines.")
+      .create("archives");
 
-    opts.addOption(fs);
-    opts.addOption(jt);
-    opts.addOption(oconf);
-    opts.addOption(property);
-    opts.addOption(libjars);
-    opts.addOption(files);
-    opts.addOption(archives);
-    opts.addOption(tokensFile);
+      // file with security tokens
+      Option tokensFile = OptionBuilder.withArgName("tokensFile")
+      .hasArg()
+      .withDescription("name of the file with the tokens")
+      .create("tokenCacheFile");
 
-    return opts;
+
+      opts.addOption(fs);
+      opts.addOption(jt);
+      opts.addOption(oconf);
+      opts.addOption(property);
+      opts.addOption(libjars);
+      opts.addOption(files);
+      opts.addOption(archives);
+      opts.addOption(tokensFile);
+
+      return opts;
+    }
   }
 
   /**
