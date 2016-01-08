@@ -27,7 +27,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -220,7 +219,7 @@ public class GenericOptionsParser {
   /**
    * Specify properties of each generic option.
    * <i>Important</i?: as {@link OptionBuilder} is not thread safe, subclasses
-   * must synchronized use on {code OptionBuilder.class.
+   * must synchronize use on {@code OptionBuilder.class}
    */
   @SuppressWarnings("static-access")
   protected Options buildGeneralOptions(Options opts) {
@@ -383,7 +382,7 @@ public class GenericOptionsParser {
   }
 
   /**
-   * takes input as a comma separated list of files
+   * Takes input as a comma separated list of files
    * and verifies if they exist. It defaults for file:///
    * if the files specified do not have a scheme.
    * it returns the paths uri converted defaulting to file:///.
