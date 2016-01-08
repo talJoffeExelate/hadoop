@@ -91,7 +91,9 @@ public class ServiceLauncher<S extends Service>
   public static final String NAME = "ServiceLauncher";
 
   protected static final String USAGE_NAME = "Usage: " + NAME;
-  protected static final String USAGE_SERVICE_ARGUMENTS = "service-classname <service arguments>";
+  protected static final String USAGE_SERVICE_ARGUMENTS =
+    "service-classname <service arguments>";
+
   /**
    * Usage message.
    * <p>
@@ -144,7 +146,11 @@ public class ServiceLauncher<S extends Service>
   private String serviceName;
 
   /**
+<<<<<<< 804dd9b74b2c8383fbd0686e310de0e6433fda76
    * Classname for the service to create.; empty string otherwise.
+=======
+   * Classname for the service to create; empty string otherwise
+>>>>>>> YARN-679: fix the failing tests; switch exit codes to the current slider "chopped HTTP error code" style, which works very well
    */
   private String serviceClassName = "";
 
@@ -242,7 +248,7 @@ public class ServiceLauncher<S extends Service>
   public String toString() {
     final StringBuilder sb = new StringBuilder("\"ServiceLauncher for \"");
     sb.append(serviceName);
-    if (serviceClassName != null && !serviceClassName.isEmpty()) {
+    if (isClassnameDefined()) {
       sb.append(", serviceClassName='").append(serviceClassName).append('\'');
     }
     if (service != null) {
@@ -280,7 +286,7 @@ public class ServiceLauncher<S extends Service>
     // set up the configs, using reflection to push in the -site.xml files
     createDefaultConfigs();
     Configuration conf = createConfiguration();
-    commandOptions = createOptions();
+    bindCommandOptions();
     ExitUtil.ExitException exitException;
     try {
       List<String> processedArgs = extractCommandOptions(conf, args);
@@ -297,6 +303,14 @@ public class ServiceLauncher<S extends Service>
     System.out.flush();
     System.err.flush();
     exit(exitException);
+  }
+
+  /**
+   * Set the {@link #commandOptions} field to the result of
+   * {@link #createOptions()}; protected for subclasses and test access.
+   */
+  protected void bindCommandOptions() {
+    commandOptions = createOptions();
   }
 
   /**
@@ -334,28 +348,29 @@ public class ServiceLauncher<S extends Service>
    */
   @SuppressWarnings("static-access")
   protected Options createOptions() {
-    synchronized (OptionBuilder.class) {
-      Options options = new Options();
-      Option oconf = OptionBuilder.withArgName("configuration file")
-          .hasArg()
-          .withDescription("specify an application configuration file")
-          .withLongOpt(ARG_CONF)
-          .create(ARG_CONF_SHORT);
-      Option confclass = OptionBuilder.withArgName("configuration classname")
-          .hasArg()
-          .withDescription("Classname of a subclass of Hadoop Configuration file to load")
-          .withLongOpt(ARG_CONFCLASS)
-          .create(ARG_CONFCLASS_SHORT);
-      Option property = OptionBuilder.withArgName("property=value")
-          .hasArg()
-          .withDescription("use value for given property")
-          .create('D');
-      options.addOption(oconf);
-      options.addOption(property);
-      options.addOption(confclass);
-      return options;
-    }
+  synchronized (OptionBuilder.class)
+  {
+    Options options = new Options();
+    Option oconf = OptionBuilder.withArgName("configuration file")
+        .hasArg()
+        .withDescription("specify an application configuration file")
+        .withLongOpt(ARG_CONF)
+        .create(ARG_CONF_SHORT);
+    Option confclass = OptionBuilder.withArgName("configuration classname")
+        .hasArg()
+        .withDescription("Classname of a Hadoop Configuration subclass to load")
+        .withLongOpt(ARG_CONFCLASS)
+        .create(ARG_CONFCLASS_SHORT);
+    Option property = OptionBuilder.withArgName("property=value")
+        .hasArg()
+        .withDescription("use value for given property")
+        .create('D');
+    options.addOption(oconf);
+    options.addOption(property);
+    options.addOption(confclass);
+    return options;
   }
+}
 
   /**
    * Override point: create the base configuration for the service.
