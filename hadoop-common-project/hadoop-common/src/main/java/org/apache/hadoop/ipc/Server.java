@@ -1994,7 +1994,8 @@ public abstract class Server {
         final Call call = new Call(callId, retry, null, this);
         setupResponse(authFailedResponse, call,
             RpcStatusProto.FATAL, wrse.getRpcErrorCodeProto(), null,
-            ioe.getClass().getName(), ioe.getMessage());
+            ioe.getClass().getName(),
+            ioe.getMessage() != null ? ioe.getMessage() : ioe.toString());
         call.sendResponse();
         throw wrse;
       }
@@ -2597,8 +2598,9 @@ public abstract class Server {
         return;
       }
     } else { // Rpc Failure
-      headerBuilder.setExceptionClassName(errorClass);
-      headerBuilder.setErrorMsg(error);
+      headerBuilder.setExceptionClassName(errorClass != null
+          ? errorClass : "RPC failure with no error provided");
+      headerBuilder.setErrorMsg(error != null ? error : "");
       headerBuilder.setErrorDetail(erCode);
       RpcResponseHeaderProto header = headerBuilder.build();
       int headerLen = header.getSerializedSize();
