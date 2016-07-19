@@ -86,7 +86,7 @@ public class TestServiceLauncherInnerMethods extends
   public void testConfigLoading() throws Throwable {
     ServiceLauncher<BreakableService> launcher =
         new ServiceLauncher<>("BreakableService");
-    List<String> configurationsToCreate = launcher.getConfigurationClassesToCreate();
+    List<String> configurationsToCreate = launcher.getConfigurationsToCreate();
     assertTrue(configurationsToCreate.size() > 1);
     int created = launcher.loadConfigurationClasses();
     assertEquals(1, created);

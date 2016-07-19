@@ -65,7 +65,7 @@ public final class IrqHandler implements SignalHandler {
   private final AtomicInteger signalCount = new AtomicInteger(0);
 
   /**
-   * stored signal.
+   * Stored signal.
    */
   private Signal signal;
 
@@ -85,7 +85,7 @@ public final class IrqHandler implements SignalHandler {
    * Bind to the interrupt handler.
    * @throws IllegalArgumentException if the exception could not be set
    */
-  protected void bind() {
+  void bind() {
     Preconditions.checkState(signal == null, "Handler already bound");
     try {
       signal = new Signal(name);

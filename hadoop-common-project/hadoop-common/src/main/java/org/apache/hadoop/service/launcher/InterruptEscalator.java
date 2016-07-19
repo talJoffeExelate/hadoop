@@ -56,7 +56,7 @@ public class InterruptEscalator implements IrqHandler.Interrupted {
 
   /**
    * Flag to indicate when a shutdown signal has already been received.
-   * This allows the operation to be escalated
+   * This allows the operation to be escalated.
    */
   private final AtomicBoolean signalAlreadyReceived = new AtomicBoolean(false);
 
@@ -190,7 +190,7 @@ public class InterruptEscalator implements IrqHandler.Interrupted {
     }
 
     /**
-     * shutdown callback: stop the service and set an atomic boolean
+     * Shutdown callback: stop the service and set an atomic boolean
      * if it stopped within the shutdown time.
      */
     @Override

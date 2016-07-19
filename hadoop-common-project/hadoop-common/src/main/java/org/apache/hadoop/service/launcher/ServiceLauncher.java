@@ -42,11 +42,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A class to launch any service by name.
+ * A class to launch any YARN service by name.
  *
  * It's designed to be subclassed for custom entry points.
  *
- * 
  * Workflow:
  * <ol>
  *   <li>An instance of the class is created. It must be of the type
@@ -57,7 +56,7 @@ import java.util.List;
  *    arguments have been stripped.</li>
  *   <li>Its {@link Service#init(Configuration)} and {@link Service#start()}
  *   methods are called.</li>
- *   <li>If it implements it, {@link LaunchableService#runService()}
+ *   <li>If it implements it, {@link LaunchableService#execute()}
  *   is called and its return code used as the exit code.</li>
  *   <li>Otherwise: it waits for the service to stop, assuming that the
  *   {@link Service#start()} method spawns one or more thread
@@ -155,21 +154,6 @@ public class ServiceLauncher<S extends Service>
   private String serviceClassName = "";
 
   /**
-   * List of classnames to load to configuration before creating a
-   * {@link Configuration} instance.
-   */
-  private List<String> confClassnames = new ArrayList<>();
-
-  /**
-   * URLs of configurations to load into the configuration instance created.
-   */
-  private List<URL> confResourceUrls = new ArrayList<>();
-
-
-  /** Command options. Preserved for usage statements. */
-  private Options commandOptions;
-
-  /**
    * List of the standard configurations to create (and so load in properties).
    */
   protected static final String[] DEFAULT_CONFIGS = {
@@ -177,6 +161,20 @@ public class ServiceLauncher<S extends Service>
       "org.apache.hadoop.hdfs.HdfsConfiguration",
       "org.apache.hadoop.yarn.conf.YarnConfiguration"
   };
+
+  /**
+   * List of classnames to load to configuration before creating a
+   * {@link Configuration} instance.
+   */
+  private List<String> confClassnames = new ArrayList<>(DEFAULT_CONFIGS.length);
+
+  /**
+   * URLs of configurations to load into the configuration instance created.
+   */
+  private List<URL> confResourceUrls = new ArrayList<>(1);
+
+  /** Command options. Preserved for usage statements. */
+  private Options commandOptions;
 
   /**
    * Create an instance of the launcher.
@@ -203,7 +201,7 @@ public class ServiceLauncher<S extends Service>
    *
    * Null until
    * {@link #coreServiceLaunch(Configuration, List, boolean, boolean)}
-   * has completed
+   * has completed.
    * @return the service
    */
   public final S getService() {
@@ -358,8 +356,7 @@ public class ServiceLauncher<S extends Service>
    */
   @SuppressWarnings("static-access")
   protected Options createOptions() {
-  synchronized (OptionBuilder.class)
-  {
+  synchronized (OptionBuilder.class) {
     Options options = new Options();
     Option oconf = OptionBuilder.withArgName("configuration file")
         .hasArg()
@@ -893,11 +890,12 @@ public class ServiceLauncher<S extends Service>
       // and bail out if they don't exist
       if (line.hasOption(ARG_CONF)) {
         String[] filenames = line.getOptionValues(ARG_CONF);
-        LOG.debug("Configuration files {}", filenames);
         verifyConfigurationFilesExist(filenames);
         // Add URLs of files as list of URLs to load
         for (String filename : filenames) {
-          confResourceUrls.add(new File(filename).toURI().toURL());
+          File file = new File(filename);
+          LOG.debug("Configuration files {}", file);
+          confResourceUrls.add(file.toURI().toURL());
         }
       }
       if (line.hasOption(ARG_CONFCLASS)) {
