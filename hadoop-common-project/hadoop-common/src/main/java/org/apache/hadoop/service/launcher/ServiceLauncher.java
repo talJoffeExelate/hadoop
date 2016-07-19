@@ -356,28 +356,29 @@ public class ServiceLauncher<S extends Service>
    */
   @SuppressWarnings("static-access")
   protected Options createOptions() {
-  synchronized (OptionBuilder.class) {
-    Options options = new Options();
-    Option oconf = OptionBuilder.withArgName("configuration file")
-        .hasArg()
-        .withDescription("specify an application configuration file")
-        .withLongOpt(ARG_CONF)
-        .create(ARG_CONF_SHORT);
-    Option confclass = OptionBuilder.withArgName("configuration classname")
-        .hasArg()
-        .withDescription("Classname of a Hadoop Configuration subclass to load")
-        .withLongOpt(ARG_CONFCLASS)
-        .create(ARG_CONFCLASS_SHORT);
-    Option property = OptionBuilder.withArgName("property=value")
-        .hasArg()
-        .withDescription("use value for given property")
-        .create('D');
-    options.addOption(oconf);
-    options.addOption(property);
-    options.addOption(confclass);
-    return options;
+    synchronized (OptionBuilder.class) {
+      Options options = new Options();
+      Option oconf = OptionBuilder.withArgName("configuration file")
+          .hasArg()
+          .withDescription("specify an application configuration file")
+          .withLongOpt(ARG_CONF)
+          .create(ARG_CONF_SHORT);
+      Option confclass = OptionBuilder.withArgName("configuration classname")
+          .hasArg()
+          .withDescription(
+              "Classname of a Hadoop Configuration subclass to load")
+          .withLongOpt(ARG_CONFCLASS)
+          .create(ARG_CONFCLASS_SHORT);
+      Option property = OptionBuilder.withArgName("property=value")
+          .hasArg()
+          .withDescription("use value for given property")
+          .create('D');
+      options.addOption(oconf);
+      options.addOption(property);
+      options.addOption(confclass);
+      return options;
+    }
   }
-}
 
   /**
    * Override point: create the base configuration for the service.

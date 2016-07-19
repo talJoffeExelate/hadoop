@@ -22,11 +22,11 @@ import org.apache.hadoop.service.BreakableService;
 import org.apache.hadoop.service.launcher.ServiceLaunchException;
 
 /**
- * Launcher test service that does not take CLI arguments
+ * Launcher test service that does not take CLI arguments.
  */
 public class FailureTestService extends BreakableService {
 
-  public final int delay;
+  private final int delay;
 
   public FailureTestService(boolean failOnInit,
       boolean failOnStart,

@@ -39,8 +39,8 @@ public class NullBindLaunchableService extends LaunchableRunningService {
   }
 
   @Override
-  public Configuration bindArgs(Configuration config, List<String> args) throws
-      Exception {
+  public Configuration bindArgs(Configuration config, List<String> args)
+      throws Exception {
     return null;
   }
 }

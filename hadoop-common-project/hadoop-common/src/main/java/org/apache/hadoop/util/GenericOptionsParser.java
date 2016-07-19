@@ -230,37 +230,38 @@ public class GenericOptionsParser {
           + "overrides 'fs.defaultFS' property from configurations.")
           .create("fs");
       Option jt = OptionBuilder.withArgName("local|resourcemanager:port")
-      .hasArg()
-      .withDescription("specify a ResourceManager")
-      .create("jt");
+          .hasArg()
+          .withDescription("specify a ResourceManager")
+          .create("jt");
       Option oconf = OptionBuilder.withArgName("configuration file")
-      .hasArg()
-      .withDescription("specify an application configuration file")
-      .create("conf");
+          .hasArg()
+          .withDescription("specify an application configuration file")
+          .create("conf");
       Option property = OptionBuilder.withArgName("property=value")
-      .hasArg()
-      .withDescription("use value for given property")
-      .create('D');
+          .hasArg()
+          .withDescription("use value for given property")
+          .create('D');
       Option libjars = OptionBuilder.withArgName("paths")
-      .hasArg()
-      .withDescription("comma separated jar files to include in the classpath.")
-      .create("libjars");
+          .hasArg()
+          .withDescription(
+              "comma separated jar files to include in the classpath.")
+          .create("libjars");
       Option files = OptionBuilder.withArgName("paths")
-      .hasArg()
-      .withDescription("comma separated files to be copied to the " +
-             "map reduce cluster")
-      .create("files");
+          .hasArg()
+          .withDescription("comma separated files to be copied to the " +
+              "map reduce cluster")
+          .create("files");
       Option archives = OptionBuilder.withArgName("paths")
-      .hasArg()
-      .withDescription("comma separated archives to be unarchived" +
-                       " on the compute machines.")
-      .create("archives");
+          .hasArg()
+          .withDescription("comma separated archives to be unarchived" +
+              " on the compute machines.")
+          .create("archives");
 
       // file with security tokens
       Option tokensFile = OptionBuilder.withArgName("tokensFile")
-      .hasArg()
-      .withDescription("name of the file with the tokens")
-      .create("tokenCacheFile");
+          .hasArg()
+          .withDescription("name of the file with the tokens")
+          .create("tokenCacheFile");
 
 
       opts.addOption(fs);

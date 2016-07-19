@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Test service launcher interrupt handling
+ * Test service launcher interrupt handling.
  */
 public class TestServiceInterruptHandling
     extends AbstractServiceLauncherTestBase {
@@ -46,10 +46,9 @@ public class TestServiceInterruptHandling
     Thread.sleep(500);
     IrqHandler.InterruptData data = catcher.interruptData;
     assertNotNull("interrupt data", data);
-    assertEquals(name, data.name);
+    assertEquals(name, data.getName());
     assertEquals(1, irqHandler.getSignalCount());
   }
-
 
   @Test
   public void testInterruptEscalationShutdown() throws Throwable {

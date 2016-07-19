@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.service.launcher.testservices;
 
+/**
+ * Service which fails in its constructor.
+ */
 public class FailInConstructorService extends FailureTestService {
 
   public static final String NAME =

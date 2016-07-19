@@ -153,12 +153,20 @@ public final class IrqHandler implements SignalHandler {
    * Interrupt data to pass on.
    */
   public static class InterruptData {
-    public final String name;
-    public final int number;
+    private final String name;
+    private final int number;
 
     public InterruptData(String name, int number) {
       this.name = name;
       this.number = number;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public int getNumber() {
+      return number;
     }
 
     @Override

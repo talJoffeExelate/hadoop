@@ -61,7 +61,7 @@ public class TestServiceLauncherInnerMethods extends
     LaunchableRunningService service = launcher.getService();
     assertInState(service, Service.STATE.STARTED);
     service.failInRun = true;
-    service.exitCode = EXIT_CONNECTIVITY_PROBLEM;
+    service.setExitCode(EXIT_CONNECTIVITY_PROBLEM);
     assertEquals(EXIT_CONNECTIVITY_PROBLEM, service.execute());
   }
 

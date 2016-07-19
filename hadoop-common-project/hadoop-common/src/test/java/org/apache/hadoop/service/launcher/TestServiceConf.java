@@ -29,6 +29,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
+/**
+ * Test how configuration files are loaded off the command line.
+ */
 public class TestServiceConf
     extends AbstractServiceLauncherTestBase {
 
@@ -76,7 +79,7 @@ public class TestServiceConf
 
   /**
    * Low level conf value extraction test...just to make sure
-   * that all works at the lower level
+   * that all works at the lower level.
    * @throws Throwable
    */
   @Test
@@ -100,11 +103,6 @@ public class TestServiceConf
     assertEquals("true", extracted.get("propagated", "unset"));
   }
 
-  /**
-   * Low level conf value extraction test...just to make sure
-   * that all works at the lower level
-   * @throws Throwable
-   */
   @Test
   public void testDualConfArgs() throws Throwable {
     ExitTrackingServiceLauncher<Service> launcher =
@@ -129,7 +127,6 @@ public class TestServiceConf
     assertTrue(extracted.getBoolean(key1, false));
     assertEquals(7, extracted.getInt(key2, -1));
   }
-
 
   @Test
   public void testConfArgWrongFiletype() throws Throwable {

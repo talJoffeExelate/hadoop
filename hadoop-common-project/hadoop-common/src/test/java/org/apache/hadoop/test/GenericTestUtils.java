@@ -695,7 +695,7 @@ public abstract class GenericTestUtils {
   }
 
   /**
-   * Formatted fail, via {@link String#format(String, Object...)}
+   * Formatted fail, via {@link String#format(String, Object...)}.
    * @param format format string
    * @param args argument list. If the last argument is a throwable, it
    * is used as the inner cause of the exception
@@ -712,7 +712,7 @@ public abstract class GenericTestUtils {
   }
 
   /**
-   * Conditional formatted fail, via {@link String#format(String, Object...)}
+   * Conditional formatted fail, via {@link String#format(String, Object...)}.
    * @param condition condition: if true the method fails
    * @param format format string
    * @param args argument list. If the last argument is a throwable, it

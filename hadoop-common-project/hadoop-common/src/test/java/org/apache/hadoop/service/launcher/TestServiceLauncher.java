@@ -36,7 +36,6 @@ import static org.apache.hadoop.service.launcher.testservices.ExceptionInExecute
 
 import org.junit.Test;
 
-
 public class TestServiceLauncher extends AbstractServiceLauncherTestBase {
 
   @Test
@@ -55,7 +54,7 @@ public class TestServiceLauncher extends AbstractServiceLauncherTestBase {
   }
 
   /**
-   * Test the behaviour of service stop logic
+   * Test the behaviour of service stop logic.
    */
   @Test
   public void testStopInStartup() throws Throwable {
@@ -110,7 +109,7 @@ public class TestServiceLauncher extends AbstractServiceLauncherTestBase {
   /**
    * As the exception is doing some formatting tricks, these
    * tests verify that exception arguments are being correctly
-   * used as initializers
+   * used as initializers.
    */
   @Test
   public void testBasicExceptionFormatting() throws Throwable {

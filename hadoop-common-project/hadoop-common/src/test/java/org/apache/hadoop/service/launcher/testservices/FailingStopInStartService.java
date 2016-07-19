@@ -19,7 +19,7 @@
 package org.apache.hadoop.service.launcher.testservices;
 
 /**
- * This service also stops immediately
+ * This service stops during its start operation.
  */
 public class FailingStopInStartService extends FailureTestService {
   public static final String NAME =

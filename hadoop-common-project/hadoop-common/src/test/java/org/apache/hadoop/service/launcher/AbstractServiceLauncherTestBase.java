@@ -49,7 +49,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   public static final String CONF_FILE_DIR = "target/launcher/conf";
 
   /**
-   * A service which will be automatically stopped on teardown
+   * A service which will be automatically stopped on teardown.
    */
   private Service serviceToTeardown;
 
@@ -60,7 +60,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   public Timeout testTimeout = new Timeout(15000);
 
   /**
-   * Rule to provide the method name
+   * Rule to provide the method name.
    */
   @Rule
   public TestName methodName = new TestName();
@@ -92,7 +92,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Assert that a service is in a state
+   * Assert that a service is in a state.
    * @param service service
    * @param expected expected state
    */
@@ -105,7 +105,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Assert a service has stopped
+   * Assert a service has stopped.
    * @param service service
    */
   protected void assertStopped(Service service) {
@@ -113,7 +113,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Assert that an exception code matches the value expected
+   * Assert that an exception code matches the value expected.
    * @param expected expected value
    * @param text text in exception -can be null
    * @param e exception providing the actual value
@@ -136,7 +136,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Assert the launch come was a service creation failure
+   * Assert the launch come was a service creation failure.
    * @param classname argument
    */
   protected void assertServiceCreationFails(String classname) {
@@ -144,7 +144,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Assert a launch outcome
+   * Assert a launch outcome.
    * @param expected expected value
    * @param text text in exception -can be null
    * @param args CLI args
@@ -166,7 +166,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Assert a launch runs
+   * Assert a launch runs.
    * @param args CLI args
    */
   protected void assertRuns(String... args) {
@@ -174,7 +174,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Init and start a service
+   * Init and start a service.
    * @param service the service
    * @return the service
    */
@@ -186,7 +186,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Save a configuration to a config file in the target dir
+   * Save a configuration to a config file in the target dir.
    * @param conf config
    * @return absolute path
    * @throws IOException problems
@@ -202,7 +202,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Create a new config from key-val pairs
+   * Create a new config from key-val pairs.
    * @param kvp a list of key, value, ...
    * @return a new configuration
    */
@@ -216,7 +216,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
     return conf;
   }
 
-  /** varargs to list conversion */
+  /** varargs to list conversion. */
   protected List<String> asList(String... args) {
     return Arrays.asList(args);
   }
@@ -275,7 +275,7 @@ public class AbstractServiceLauncherTestBase extends Assert implements
   }
 
   /**
-   * Launch expecting an exception
+   * Launch expecting an exception.
    * @param serviceClass service class to create
    * @param conf configuration
    * @param expectedText expected text; may be "" or null

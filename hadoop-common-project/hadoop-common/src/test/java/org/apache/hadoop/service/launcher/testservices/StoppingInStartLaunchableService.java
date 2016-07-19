@@ -22,7 +22,11 @@ import org.apache.hadoop.service.launcher.AbstractLaunchableService;
 import org.apache.hadoop.service.launcher.LauncherExitCodes;
 import org.apache.hadoop.service.launcher.ServiceLaunchException;
 
-public class StoppingInStartLaunchableService extends AbstractLaunchableService {
+/**
+ * Try to stop() in service start; in execute() raise an exception.
+ */
+public class StoppingInStartLaunchableService
+    extends AbstractLaunchableService {
 
   public static final String NAME =
       "org.apache.hadoop.service.launcher.testservices.StoppingInStartLaunchableService";

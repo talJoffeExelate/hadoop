@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.service.launcher.testservices;
 
+/**
+ * Service which fails in its init() operation.
+ */
 public class FailInInitService extends FailureTestService {
   public static final String NAME =
       "org.apache.hadoop.service.launcher.testservices.FailInInitService";

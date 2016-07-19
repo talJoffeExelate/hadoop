@@ -26,30 +26,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * A service which implements {@link LaunchableService} and
+ * A service which implements {@link LaunchableService}.
+ * It
  * <ol>
  *   <li>does nothing in its {@link #serviceStart()}</li>
- *   <li>does its sleep+ maybe fail operation in its {@link #execute()} method</li>
+ *   <li>does its sleep+ maybe fail operation in its {@link #execute()}
+ *   method</li>
  *   <li>gets the failing flag from the argument {@link #ARG_FAILING} first,
  *   the config file second.</li>
- *   <li>returns 0 for a succesful execute</li>
+ *   <li>returns 0 for a successful execute</li>
  *   <li>returns a configurable exit code for a failing execute</li>
- *   <li>generates a new configuration in its {@link #bindArgs(Configuration, List)}
+ *   <li>generates a new configuration in {@link #bindArgs(Configuration, List)}
  *   to verify that these propagate.</li>
  * </ol>
  */
 public class LaunchableRunningService extends RunningService implements
     LaunchableService {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(RunningService.class);
   public static final String NAME =
       "org.apache.hadoop.service.launcher.testservices.LaunchableRunningService";
   public static final String ARG_FAILING = "--failing";
   public static final String EXIT_CODE_PROP = "exit.code";
-  public int exitCode = 0;
+  private static final Logger LOG =
+      LoggerFactory.getLogger(LaunchableRunningService.class);
+  private int exitCode = 0;
 
   public LaunchableRunningService() {
     this("LaunchableRunningService");
@@ -98,5 +99,13 @@ public class LaunchableRunningService extends RunningService implements
       return exitCode;
     }
     return 0;
+  }
+
+  public int getExitCode() {
+    return exitCode;
+  }
+
+  public void setExitCode(int exitCode) {
+    this.exitCode = exitCode;
   }
 }

@@ -114,7 +114,7 @@ public class BreakableService extends AbstractService {
   }
 
   /**
-   * The exception explicitly raised on a failure
+   * The exception explicitly raised on a failure.
    */
   public static class BrokenLifecycleEvent extends RuntimeException {
 

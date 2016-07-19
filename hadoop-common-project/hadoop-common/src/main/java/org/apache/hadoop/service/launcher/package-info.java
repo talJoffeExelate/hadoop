@@ -115,7 +115,7 @@
  <p>
  To summarize: provided a service launches its long-lived threads in its Service
  {@code start()} method, the service launcher can create it, configure it
- and start it -triggering shutdown when signalled.</b>
+ and start it -triggering shutdown when signalled.
 
  What these services can not do is get at the command line parameters or easily
  propagate exit codes (there is way covered later). These features require
@@ -366,7 +366,8 @@
  method with one that creates the right configuration.
  This is good if a single
  launcher can be created for all services launched by a module, such as
- HDFS or YARN. It does imply a dedicated script to invoke the custom {@code main()} method.
+ HDFS or YARN. It does imply a dedicated script to invoke the custom
+ {@code main()} method.
 
  <p><b>2: Creation in {@code bindArgs()}</b>
 
@@ -399,16 +400,17 @@
  This is a strategy used by many existing YARN services, and is ideal for
  services which do not implement the LaunchableService interface. Its one
  weakness is that the configuration is now private to that instance. Some
- YARN services use a single shared configuration instance as a way of propagating
- information between peer services in a
+ YARN services use a single shared configuration instance as a way of
+ propagating information between peer services in a
  {@link org.apache.hadoop.service.CompositeService}.
  While a dangerous practice, it does happen.
 
 
  <b>Summary</b>: the ServiceLauncher makes a best-effort attempt to load the
  standard Configuration subclasses, but does not fail if they are not present.
- Services which require a specific subclasses should follow one of the strategies
- listed; creation in {@code serviceInit()} is the recommended policy.
+ Services which require a specific subclasses should follow one of the
+ strategies listed;
+ creation in {@code serviceInit()} is the recommended policy.
  
  <h2>Configuration file loading</h2>
 

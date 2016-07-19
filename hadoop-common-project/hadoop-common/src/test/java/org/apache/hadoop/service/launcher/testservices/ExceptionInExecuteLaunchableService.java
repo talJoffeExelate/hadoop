@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Raise an exception in the execute() method; the exception type can
- * be configured from the CLI
+ * be configured from the CLI.
  */
 public class ExceptionInExecuteLaunchableService extends
     AbstractLaunchableService {
@@ -44,8 +44,7 @@ public class ExceptionInExecuteLaunchableService extends
 
   public static final String EXIT_IN_IOE_TEXT = "Exit in IOE";
   public static final int IOE_EXIT_CODE = 64;
-  ExType exceptionType = ExType.EX;
-  ;
+  private ExType exceptionType = ExType.EX;
 
   public ExceptionInExecuteLaunchableService() {
     super("ExceptionInExecuteLaunchedService");
@@ -67,16 +66,16 @@ public class ExceptionInExecuteLaunchableService extends
   @Override
   public int execute() throws Exception {
     switch (exceptionType) {
-      case SLE:
-        throw new ServiceLaunchException(LauncherExitCodes.EXIT_OTHER_FAILURE,
-            SLE_TEXT);
-      case IOE:
-        throw new IOECodedException();
-      case THROWABLE:
-        throw new OutOfMemoryError("OOM");
-      case EX:
-      default:
-        throw new Exception(OTHER_EXCEPTION_TEXT);
+    case SLE:
+      throw new ServiceLaunchException(LauncherExitCodes.EXIT_OTHER_FAILURE,
+          SLE_TEXT);
+    case IOE:
+      throw new IOECodedException();
+    case THROWABLE:
+      throw new OutOfMemoryError("OOM");
+    case EX:
+    default:
+      throw new Exception(OTHER_EXCEPTION_TEXT);
     }
   }
 

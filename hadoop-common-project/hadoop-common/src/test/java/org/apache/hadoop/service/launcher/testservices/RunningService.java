@@ -31,12 +31,12 @@ public class RunningService extends AbstractService implements Runnable {
   public static final int DELAY = 100;
 
   /**
-   * Property on delay times
+   * Property on delay times.
    */
   public static final String DELAY_TIME = "delay.time";
   public static final String FAIL_IN_RUN = "fail.runnable";
   public static final String FAILURE_MESSAGE = "FAIL_IN_RUN";
-  public boolean interrupted;
+  private boolean interrupted;
 
   public int delayTime = DELAY;
   public boolean failInRun;
@@ -76,4 +76,9 @@ public class RunningService extends AbstractService implements Runnable {
     }
     stop();
   }
+
+  public boolean isInterrupted() {
+    return interrupted;
+  }
+
 }

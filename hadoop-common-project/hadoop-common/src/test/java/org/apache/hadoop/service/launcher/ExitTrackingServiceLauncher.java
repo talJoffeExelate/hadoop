@@ -25,13 +25,14 @@ import org.apache.hadoop.util.ExitUtil;
  * Service launcher for testing: The exit operation has been overloaded to
  * record the exit exception.
  *
- * It relies on the test runner to have disabled exits in the {@link ExitUtil} class.
+ * It relies on the test runner to have disabled exits in the
+ * {@link ExitUtil} class.
  * @param <S> type of service to launch
  */
 public class ExitTrackingServiceLauncher<S extends Service> extends
     ServiceLauncher<S> {
 
-  public ExitUtil.ExitException exitException;
+  private ExitUtil.ExitException exitException;
 
   public ExitTrackingServiceLauncher(String serviceClassName) {
     super(serviceClassName);
@@ -50,5 +51,9 @@ public class ExitTrackingServiceLauncher<S extends Service> extends
 
   public void bindCommandOptions() {
     super.bindCommandOptions();
+  }
+
+  public ExitUtil.ExitException getExitException() {
+    return exitException;
   }
 }

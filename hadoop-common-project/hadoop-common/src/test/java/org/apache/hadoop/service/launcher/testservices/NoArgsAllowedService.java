@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * service that does not allow any arguments
+ * service that does not allow any arguments.
  */
 public class NoArgsAllowedService extends AbstractLaunchableService {
 
@@ -44,8 +44,8 @@ public class NoArgsAllowedService extends AbstractLaunchableService {
       "org.apache.hadoop.service.launcher.testservices.NoArgsAllowedService";
   
   @Override
-  public Configuration bindArgs(Configuration config, List<String> args) throws
-      Exception {
+  public Configuration bindArgs(Configuration config, List<String> args)
+      throws Exception {
     Configuration configuration = super.bindArgs(config, args);
     if (!args.isEmpty()) {
       StringBuilder argsList = new StringBuilder();
@@ -53,7 +53,8 @@ public class NoArgsAllowedService extends AbstractLaunchableService {
         argsList.append('"').append(arg).append("\" ");
       }
       LOG.error("Got {} arguments: {}", args.size(), argsList);
-      throw new ServiceLaunchException(LauncherExitCodes.EXIT_COMMAND_ARGUMENT_ERROR,
+      throw new ServiceLaunchException(
+          LauncherExitCodes.EXIT_COMMAND_ARGUMENT_ERROR,
           "Expected 0 arguments but got %d: %s",
           args.size(),
           argsList);

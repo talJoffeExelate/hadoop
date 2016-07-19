@@ -25,7 +25,7 @@ import org.junit.Assert;
 import java.util.List;
 
 /**
- * Init in the constructor and make sure that it isn't inited again
+ * Init in the constructor and make sure that it isn't inited again.
  */
 public class InitInConstructorLaunchableService extends
     AbstractLaunchableService {
@@ -46,8 +46,8 @@ public class InitInConstructorLaunchableService extends
   }
 
   @Override
-  public Configuration bindArgs(Configuration config, List<String> args) throws
-      Exception {
+  public Configuration bindArgs(Configuration config, List<String> args)
+      throws Exception {
     Assert.assertEquals(STATE.INITED, getServiceState());
     Assert.assertTrue(isInState(STATE.INITED));
     Assert.assertNotSame(getConfig(), config);
