@@ -15,9 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.util;
-
-import java.io.File;
+package org.apache.hadoop.util;import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -210,7 +208,7 @@ public class GenericOptionsParser {
 
   /**
    * Query for the parse operation succeeding.
-   * @return true if there was no error parsing the CLI
+   * @return true if parsing the CLI was successful
    */
   public boolean isParseSuccessful() {
     return parseSuccessful;
