@@ -38,6 +38,7 @@
 
     <!-- are scale tests enabled ? -->
     <fs.s3a.scale.test.enabled>unset</fs.s3a.scale.test.enabled>
+    <fs.s3a.scale.test.excludes>org.apache.hadoop.fs.s3a.categories.Scale</fs.s3a.scale.test.excludes>
     <!-- Size in MB of huge files. -->
     <fs.s3a.scale.test.huge.filesize>unset</fs.s3a.scale.test.huge.filesize>
     <!-- Size in MB of the partion size in huge file uploads. -->
@@ -176,6 +177,10 @@
                   <!-- Exclude all of these tests from parallel execution, -->
                   <!-- and instead run them sequentially in a separate -->
                   <!-- Surefire execution step later. -->
+                  <excludedGroups>
+                    org.apache.hadoop.fs.s3a.categories.Sequential,
+                    org.apache.hadoop.fs.s3a.categories.Scale
+                  </excludedGroups>
                   <includes>
                     <include>**/ITest*.java</include>
                   </includes>
@@ -206,6 +211,10 @@
                   </systemPropertyVariables>
                   <!-- Do a sequential run for tests that cannot handle -->
                   <!-- parallel execution. -->
+                  <groups>
+                    org.apache.hadoop.fs.s3a.categories.Sequential,
+                    ${fs.s3a.scale.test.excludes}
+                  </groups>
                   <includes>
                     <include>**/ITestJets3tNativeS3FileSystemContract.java</include>
                     <include>**/ITest*Root*.java</include>
@@ -263,6 +272,8 @@
       </activation>
       <properties >
         <fs.s3a.scale.test.enabled>true</fs.s3a.scale.test.enabled>
+        <!-- insert a dummy class to keep maven happy-->
+        <fs.s3a.scale.test.excludes>None</fs.s3a.scale.test.excludes>
       </properties>
     </profile>
   </profiles>

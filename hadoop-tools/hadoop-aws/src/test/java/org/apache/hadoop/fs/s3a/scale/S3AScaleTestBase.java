@@ -26,10 +26,11 @@ import org.apache.hadoop.fs.s3a.S3AInputStream;
 import org.apache.hadoop.fs.s3a.S3AInstrumentation;
 import org.apache.hadoop.fs.s3a.S3ATestConstants;
 import org.apache.hadoop.fs.s3a.Statistic;
+import org.apache.hadoop.fs.s3a.categories.Scale;
 import org.apache.hadoop.metrics2.lib.MutableGaugeLong;
 
 import org.junit.Assert;
-import org.junit.Assume;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +65,7 @@ import static org.apache.hadoop.fs.s3a.S3ATestUtils.*;
  * <i>very bad form</i> in Java code (indeed, in C++ it is actually permitted;
  * the base class implementations get invoked instead).
  */
+@Category(Scale.class)
 public class S3AScaleTestBase extends AbstractS3ATestBase {
 
   public static final int _1KB = 1024;
@@ -73,9 +75,6 @@ public class S3AScaleTestBase extends AbstractS3ATestBase {
       LoggerFactory.getLogger(S3AScaleTestBase.class);
 
   private Configuration conf;
-
-  private boolean enabled;
-
 
   private Path testPath;
 
@@ -92,14 +91,6 @@ public class S3AScaleTestBase extends AbstractS3ATestBase {
     super.setup();
     testPath = path("/tests3ascale");
     LOG.debug("Scale test operation count = {}", getOperationCount());
-    // multipart purges are disabled on the scale tests
-    // check for the test being enabled
-    enabled = getTestPropertyBool(
-        getConf(),
-        KEY_SCALE_TESTS_ENABLED,
-        DEFAULT_SCALE_TESTS_ENABLED);
-    Assume.assumeTrue("Scale test disabled: to enable set property " +
-        KEY_SCALE_TESTS_ENABLED, isEnabled());
   }
 
   /**
@@ -186,15 +177,6 @@ public class S3AScaleTestBase extends AbstractS3ATestBase {
     assertNotNull("No gauge " + statistic
         + " in " + instrumentation.dump("", " = ", "\n", true), gauge);
     return gauge.value();
-  }
-
-  /**
-   * Is the test enabled; this is controlled by the configuration
-   * and the {@code -Dscale} maven option.
-   * @return true if the scale tests are enabled.
-   */
-  protected final boolean isEnabled() {
-    return enabled;
   }
 
   /**
