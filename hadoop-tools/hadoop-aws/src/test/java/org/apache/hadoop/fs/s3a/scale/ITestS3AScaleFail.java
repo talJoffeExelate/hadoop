@@ -16,25 +16,22 @@
  * limitations under the License.
  */
 
-package org.apache.hadoop.fs.s3a;
+package org.apache.hadoop.fs.s3a.scale;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.s3a.categories.Encryption;
+import org.apache.hadoop.fs.s3a.categories.Scale;
 
 /**
- * Run the encryption tests against the block output stream.
+ * This is only here to see if it runs.
  */
-@Category(Encryption.class)
-public class ITestS3AEncryptionBlockOutputStream extends ITestS3AEncryption {
+@Category(Scale.class)
+public class ITestS3AScaleFail {
 
-  @Override
-  protected Configuration createConfiguration() {
-    Configuration conf = super.createConfiguration();
-    conf.setBoolean(Constants.FAST_UPLOAD, true);
-    conf.set(Constants.FAST_UPLOAD_BUFFER,
-        Constants.FAST_UPLOAD_BYTEBUFFER);
-    return conf;
+  @Test
+  public void testEncryption() throws Throwable {
+    Assert.fail("demo");
   }
 }

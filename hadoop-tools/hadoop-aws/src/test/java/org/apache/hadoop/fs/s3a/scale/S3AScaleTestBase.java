@@ -55,7 +55,7 @@ import static org.apache.hadoop.fs.s3a.S3ATestUtils.*;
  *   if that field is null (and set the field to the created value).</li>
  *   <li>Override the superclasses {@link #createConfiguration()}
  *   to return the demand created value; make that method final so that
- *   subclasses don't break things by overridding it.</li>
+ *   subclasses don't break things by overriding it.</li>
  *   <li>Add a new override point {@link #createScaleConfiguration()}
  *   to create the config, one which subclasses can (and do) override.</li>
  * </ol>
@@ -66,7 +66,7 @@ import static org.apache.hadoop.fs.s3a.S3ATestUtils.*;
  * the base class implementations get invoked instead).
  */
 @Category(Scale.class)
-public class S3AScaleTestBase extends AbstractS3ATestBase {
+public abstract class S3AScaleTestBase extends AbstractS3ATestBase {
 
   public static final int _1KB = 1024;
   public static final int _1MB = _1KB * _1KB;

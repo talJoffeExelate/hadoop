@@ -22,7 +22,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.contract.ContractTestUtils;
+import org.apache.hadoop.fs.s3a.categories.Encryption;
+
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.IOException;
 
@@ -34,6 +37,7 @@ import static org.apache.hadoop.fs.s3a.S3ATestUtils.*;
  * are made for different file sizes as there have been reports that the
  * file length may be rounded up to match word boundaries.
  */
+@Category(Encryption.class)
 public class ITestS3AEncryption extends AbstractS3ATestBase {
   private static final String AES256 = Constants.SERVER_SIDE_ENCRYPTION_AES256;
 

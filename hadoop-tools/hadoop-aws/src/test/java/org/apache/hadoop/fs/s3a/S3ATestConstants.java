@@ -54,11 +54,6 @@ public interface S3ATestConstants {
   String KEY_PARALLEL_TEST_EXECUTION = "test.parallel.execution";
 
   /**
-   * A property set to true in maven if scale tests are enabled: {@value}.
-   */
-  String KEY_SCALE_TESTS_ENABLED = S3A_SCALE_TEST + "enabled";
-
-  /**
    * The number of operations to perform: {@value}.
    */
   String KEY_OPERATION_COUNT = SCALE_TEST + "operation.count";

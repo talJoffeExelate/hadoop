@@ -16,25 +16,10 @@
  * limitations under the License.
  */
 
-package org.apache.hadoop.fs.s3a;
-
-import org.junit.experimental.categories.Category;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.s3a.categories.Encryption;
+package org.apache.hadoop.fs.s3a.categories;
 
 /**
- * Run the encryption tests against the block output stream.
+ * Tests which rely on the object store supporting encryption.
  */
-@Category(Encryption.class)
-public class ITestS3AEncryptionBlockOutputStream extends ITestS3AEncryption {
-
-  @Override
-  protected Configuration createConfiguration() {
-    Configuration conf = super.createConfiguration();
-    conf.setBoolean(Constants.FAST_UPLOAD, true);
-    conf.set(Constants.FAST_UPLOAD_BUFFER,
-        Constants.FAST_UPLOAD_BYTEBUFFER);
-    return conf;
-  }
+public class Encryption {
 }

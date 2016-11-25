@@ -16,25 +16,11 @@
  * limitations under the License.
  */
 
-package org.apache.hadoop.fs.s3a;
-
-import org.junit.experimental.categories.Category;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.s3a.categories.Encryption;
+package org.apache.hadoop.fs.s3a.categories;
 
 /**
- * Run the encryption tests against the block output stream.
+ * This is a special category which can be set in an included/excluded
+ * group to workaround the fact that maven doesn't like empty properties.
  */
-@Category(Encryption.class)
-public class ITestS3AEncryptionBlockOutputStream extends ITestS3AEncryption {
-
-  @Override
-  protected Configuration createConfiguration() {
-    Configuration conf = super.createConfiguration();
-    conf.setBoolean(Constants.FAST_UPLOAD, true);
-    conf.set(Constants.FAST_UPLOAD_BUFFER,
-        Constants.FAST_UPLOAD_BYTEBUFFER);
-    return conf;
-  }
+public class None {
 }

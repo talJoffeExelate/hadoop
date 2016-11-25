@@ -36,8 +36,7 @@
     <downloadSources>true</downloadSources>
     <hadoop.tmp.dir>${project.build.directory}/test</hadoop.tmp.dir>
 
-    <!-- are scale tests enabled ? -->
-    <fs.s3a.scale.test.enabled>unset</fs.s3a.scale.test.enabled>
+    <!-- exclude scale tests by default -->
     <fs.s3a.scale.test.excludes>org.apache.hadoop.fs.s3a.categories.Scale</fs.s3a.scale.test.excludes>
     <!-- Size in MB of huge files. -->
     <fs.s3a.scale.test.huge.filesize>unset</fs.s3a.scale.test.huge.filesize>
@@ -126,7 +125,6 @@
                 <!-- "fork-" makes it work. -->
                 <test.unique.fork.id>fork-${surefire.forkNumber}</test.unique.fork.id>
                 <!-- Propagate scale parameters -->
-                <fs.s3a.scale.test.enabled>${fs.s3a.scale.test.enabled}</fs.s3a.scale.test.enabled>
                 <fs.s3a.scale.test.huge.filesize>${fs.s3a.scale.test.huge.filesize}</fs.s3a.scale.test.huge.filesize>
                 <fs.s3a.scale.test.huge.huge.partitionsize>${fs.s3a.scale.test.huge.partitionsize}</fs.s3a.scale.test.huge.huge.partitionsize>
                 <fs.s3a.scale.test.timeout>${fs.s3a.scale.test.timeout}</fs.s3a.scale.test.timeout>
@@ -161,7 +159,6 @@
                     <!-- "fork-" makes it work. -->
                     <test.unique.fork.id>fork-${surefire.forkNumber}</test.unique.fork.id>
                     <!-- Propagate scale parameters -->
-                    <fs.s3a.scale.test.enabled>${fs.s3a.scale.test.enabled}</fs.s3a.scale.test.enabled>
                     <fs.s3a.scale.test.huge.filesize>${fs.s3a.scale.test.huge.filesize}</fs.s3a.scale.test.huge.filesize>
                     <fs.s3a.scale.test.huge.huge.partitionsize>${fs.s3a.scale.test.huge.partitionsize}</fs.s3a.scale.test.huge.huge.partitionsize>
                     <fs.s3a.scale.test.timeout>${fs.s3a.scale.test.timeout}</fs.s3a.scale.test.timeout>
@@ -177,10 +174,7 @@
                   <!-- Exclude all of these tests from parallel execution, -->
                   <!-- and instead run them sequentially in a separate -->
                   <!-- Surefire execution step later. -->
-                  <excludedGroups>
-                    org.apache.hadoop.fs.s3a.categories.Sequential,
-                    org.apache.hadoop.fs.s3a.categories.Scale
-                  </excludedGroups>
+                  <excludedGroups>${fs.s3a.scale.test.excludes}</excludedGroups>
                   <includes>
                     <include>**/ITest*.java</include>
                   </includes>
@@ -188,7 +182,7 @@
                     <exclude>**/ITestJets3tNativeS3FileSystemContract.java</exclude>
                     <exclude>**/ITest*Root*.java</exclude>
                     <exclude>**/ITestS3AFileContextStatistics.java</exclude>
-                    <include>**/ITestS3AHuge*.java</include>
+                    <exclude>**/ITestS3AHuge*.java</exclude>
                   </excludes>
                 </configuration>
               </execution>
@@ -204,17 +198,13 @@
                     <!-- Tell tests that they are being executed sequentially -->
                     <test.parallel.execution>false</test.parallel.execution>
                     <!-- Propagate scale parameters -->
-                    <fs.s3a.scale.test.enabled>${fs.s3a.scale.test.enabled}</fs.s3a.scale.test.enabled>
                     <fs.s3a.scale.test.huge.filesize>${fs.s3a.scale.test.huge.filesize}</fs.s3a.scale.test.huge.filesize>
                     <fs.s3a.scale.test.huge.huge.partitionsize>${fs.s3a.scale.test.huge.partitionsize}</fs.s3a.scale.test.huge.huge.partitionsize>
                     <fs.s3a.scale.test.timeout>${fs.s3a.scale.test.timeout}</fs.s3a.scale.test.timeout>
                   </systemPropertyVariables>
+                  <excludedGroups>${fs.s3a.scale.test.excludes}</excludedGroups>
                   <!-- Do a sequential run for tests that cannot handle -->
                   <!-- parallel execution. -->
-                  <groups>
-                    org.apache.hadoop.fs.s3a.categories.Sequential,
-                    ${fs.s3a.scale.test.excludes}
-                  </groups>
                   <includes>
                     <include>**/ITestJets3tNativeS3FileSystemContract.java</include>
                     <include>**/ITest*Root*.java</include>
@@ -249,7 +239,6 @@
                 <configuration>
                   <systemPropertyVariables>
                     <!-- Propagate scale parameters -->
-                    <fs.s3a.scale.test.enabled>${fs.s3a.scale.test.enabled}</fs.s3a.scale.test.enabled>
                     <fs.s3a.scale.test.huge.filesize>${fs.s3a.scale.test.huge.filesize}</fs.s3a.scale.test.huge.filesize>
                     <fs.s3a.scale.test.timeout>${fs.s3a.scale.test.timeout}</fs.s3a.scale.test.timeout>
                   </systemPropertyVariables>
@@ -271,9 +260,10 @@
         </property>
       </activation>
       <properties >
-        <fs.s3a.scale.test.enabled>true</fs.s3a.scale.test.enabled>
         <!-- insert a dummy class to keep maven happy-->
-        <fs.s3a.scale.test.excludes>None</fs.s3a.scale.test.excludes>
+        <fs.s3a.scale.test.excludes>
+          org.apache.hadoop.fs.s3a.categories.None
+        </fs.s3a.scale.test.excludes>
       </properties>
     </profile>
   </profiles>
