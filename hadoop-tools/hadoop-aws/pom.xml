@@ -195,6 +195,7 @@
                     <exclude>**/ITestS3AFileContextStatistics.java</exclude>
                     <exclude>**/ITestS3AEncryptionSSE*.java</exclude>
                     <exclude>**/ITestS3AHuge*.java</exclude>
+                    <exclude>**/ITestS3ACommit*.java</exclude>
                   </excludes>
                 </configuration>
               </execution>
@@ -227,6 +228,7 @@
                     <include>**/ITestS3AFileContextStatistics.java</include>
                     <include>**/ITestS3AHuge*.java</include>
                     <include>**/ITestS3AEncryptionSSE*.java</include>
+                    <include>**/ITestS3ACommit*.java</include>
                   </includes>
                 </configuration>
               </execution>
@@ -500,14 +502,19 @@
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-mapreduce-client-jobclient</artifactId>
-      <scope>test</scope>
+      <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-yarn-server-tests</artifactId>
       <scope>test</scope>
       <type>test-jar</type>
+    </dependency>
+     <dependency>
+      <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-mapreduce-client-hs</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
@@ -526,5 +533,29 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
+    <!-- artifacts needed to bring up a Mini MR Yarn cluster-->
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-app</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-app</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-jobclient</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-jobclient</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+
   </dependencies>
 </project>
