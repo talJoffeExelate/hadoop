@@ -66,9 +66,11 @@ public class TestStatsDMetrics {
 
     try (DatagramSocket sock = new DatagramSocket()) {
       sock.setReceiveBufferSize(8192);
+      int serverPort = sock.getLocalPort();
+      assertTrue("Invalid server port: " + serverPort, serverPort > 0);
       final StatsDSink.StatsD mockStatsD =
           new StatsD(sock.getLocalAddress().getHostName(),
-              sock.getLocalPort());
+              serverPort);
       Whitebox.setInternalState(sink, "statsd", mockStatsD);
       final DatagramPacket p = new DatagramPacket(new byte[8192], 8192);
       sink.putMetrics(record);
