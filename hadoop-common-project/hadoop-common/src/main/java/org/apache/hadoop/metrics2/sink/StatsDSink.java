@@ -151,7 +151,7 @@ public class StatsDSink implements MetricsSink, Closeable {
       statsd.write(line);
     } catch (IOException e) {
       LOG.warn("Error sending metrics to StatsD", e);
-      throw new MetricsException("Error writing metric to StatsD", e);
+      throw new MetricsException("Error writing metric to StatsD: " + e, e);
     }
   }
 
@@ -200,7 +200,12 @@ public class StatsDSink implements MetricsSink, Closeable {
       }
       LOG.debug("Sending metric: {}", msg);
       packet.setData(msg.getBytes(StandardCharsets.UTF_8));
-      socket.send(packet);
+      try {
+        socket.send(packet);
+      } catch (IOException e) {
+        throw NetUtils.wrapException(this.serverHost, this.serverPort,
+            "localhost", 0, e);
+      }
     }
 
     public void close() throws IOException {

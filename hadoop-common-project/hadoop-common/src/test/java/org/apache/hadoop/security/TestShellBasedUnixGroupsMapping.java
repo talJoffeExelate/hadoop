@@ -20,6 +20,7 @@ package org.apache.hadoop.security;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.util.Shell.ExitCodeException;
@@ -109,9 +110,7 @@ public class TestShellBasedUnixGroupsMapping {
     TestGroupNotResolvable mapping = new TestGroupNotResolvable();
 
     List<String> groups = mapping.getGroups("user");
-    assertTrue(groups.size() == 2);
-    assertTrue(groups.contains("abc"));
-    assertTrue(groups.contains("def"));
+    assertGroupValues(groups, "abd", "def");
   }
 
   private class TestNumericGroupResolvable
@@ -157,10 +156,7 @@ public class TestShellBasedUnixGroupsMapping {
     TestNumericGroupResolvable mapping = new TestNumericGroupResolvable();
 
     List<String> groups = mapping.getGroups("user");
-    assertTrue(groups.size() == 3);
-    assertTrue(groups.contains("23"));
-    assertTrue(groups.contains("groupname"));
-    assertTrue(groups.contains("zzz"));
+    assertGroupValues(groups, "23", "groupname", "zzz");
   }
 
   private class TestGroupResolvable
@@ -203,11 +199,18 @@ public class TestShellBasedUnixGroupsMapping {
     TestGroupResolvable mapping = new TestGroupResolvable();
 
     List<String> groups = mapping.getGroups("user");
-    assertTrue(groups.size() == 3);
-    assertTrue(groups.contains("abc"));
-    assertTrue(groups.contains("def"));
-    assertTrue(groups.contains("hij"));
+    assertGroupValues(groups, "abd", "def", "hij");
   }
+
+  public void assertGroupValues(List<String> groups, String... expected) {
+    String details = "[" + StringUtils.join(groups, ",") + "]";
+    assertEquals("wrong group size " + details, expected.length, groups.size());
+    for (String name : expected) {
+      assertTrue("No \"" + name + "\" in " + details,
+          details.contains(name));
+    }
+  }
+
 }
 
 

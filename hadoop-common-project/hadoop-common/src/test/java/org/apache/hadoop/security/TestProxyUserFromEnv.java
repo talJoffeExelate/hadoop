@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 import org.junit.Test;
 
@@ -51,6 +52,7 @@ public class TestProxyUserFromEnv {
     if (backslashIndex != -1) {
       realUser = realUser.substring(backslashIndex + 1);
     }
-    assertEquals(realUser, realUgi.getUserName());
+    assertEquals(realUser.toLowerCase(Locale.ENGLISH),
+        realUgi.getUserName().toLowerCase(Locale.ENGLISH));
   }
 }

@@ -602,7 +602,8 @@ public class TestWinUtils {
       jobId = String.format("%f", Math.random());
       out = Shell.execCommand(winutils, "task", "create", "-m", "128", "job"
           + jobId, "java -Xmx256m -version");
-      fail("Failed to get Shell.ExitCodeException with insufficient memory");
+      fail("Failed to get Shell.ExitCodeException with insufficient memory,"
+          + " got: " + out);
     } catch (Shell.ExitCodeException ece) {
       assertThat(ece.getExitCode(), is(1));
     }
@@ -613,7 +614,8 @@ public class TestWinUtils {
       jobId = String.format("%f", Math.random());
       Shell.execCommand(winutils, "task", "create", "-c", "-1", "-m",
           "-1", "foo", "job" + jobId, "cmd /c echo job" + jobId);
-      fail("Failed to get Shell.ExitCodeException with bad parameters");
+      fail("Failed to get Shell.ExitCodeException with bad parameters,"
+          + " got: " + out);
     } catch (Shell.ExitCodeException ece) {
       assertThat(ece.getExitCode(), is(1639));
     }
@@ -622,7 +624,8 @@ public class TestWinUtils {
       jobId = String.format("%f", Math.random());
       Shell.execCommand(winutils, "task", "create", "-c", "-m", "-1",
           "job" + jobId, "cmd /c echo job" + jobId);
-      fail("Failed to get Shell.ExitCodeException with bad parameters");
+      fail("Failed to get Shell.ExitCodeException with bad parameters, "
+          + " got: " + out);
     } catch (Shell.ExitCodeException ece) {
       assertThat(ece.getExitCode(), is(1639));
     }
@@ -631,7 +634,8 @@ public class TestWinUtils {
       jobId = String.format("%f", Math.random());
       Shell.execCommand(winutils, "task", "create", "-c", "foo",
           "job" + jobId, "cmd /c echo job" + jobId);
-      fail("Failed to get Shell.ExitCodeException with bad parameters");
+      fail("Failed to get Shell.ExitCodeException with bad parameters, "
+          + " got: " + out);
     } catch (Shell.ExitCodeException ece) {
       assertThat(ece.getExitCode(), is(1639));
     }

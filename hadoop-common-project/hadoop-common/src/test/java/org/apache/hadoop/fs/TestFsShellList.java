@@ -22,6 +22,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.util.Shell;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -65,6 +66,12 @@ public class TestFsShellList {
     createFile(new Path(testRootDir, "abc"));
     String[] lsArgv = new String[]{"-ls", testRootDir.toString()};
     assertThat(shell.run(lsArgv), is(0));
+    String[] paths;
+    if (Shell.WINDOWS) {
+      paths = new String[]{"abc d ef", "ghi", "qq 123"};
+    } else {
+      paths = new String[]{"abc\bd\tef", "ghi", "qq\r123"};
+    }
 
     createFile(new Path(testRootDir, "abc\bd\tef"));
     createFile(new Path(testRootDir, "ghi"));

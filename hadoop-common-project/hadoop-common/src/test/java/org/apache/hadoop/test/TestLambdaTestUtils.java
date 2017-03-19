@@ -138,7 +138,9 @@ public class TestLambdaTestUtils extends Assert {
           TIMEOUT_FAILURE_HANDLER);
       fail("should not have got here");
     } catch (TimeoutException e) {
-      assertTrue(retry.getInvocationCount() > 4);
+      int invocationCount = retry.getInvocationCount();
+      assertTrue("invocation count only " +  invocationCount,
+          invocationCount > 4);
     }
   }
 
