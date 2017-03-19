@@ -23,8 +23,10 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.util.Shell;
 import org.apache.hadoop.util.Shell.ExitCodeException;
 import org.apache.hadoop.util.Shell.ShellCommandExecutor;
+import org.junit.Assume;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doNothing;
@@ -64,6 +66,7 @@ public class TestShellBasedUnixGroupsMapping {
 
   @Test
   public void testGetGroupsNonexistentUser() throws Exception {
+    Assume.assumeFalse(Shell.WINDOWS);
     TestGroupUserNotExist mapping = new TestGroupUserNotExist();
 
     List<String> groups = mapping.getGroups("foobarusernotexist");
@@ -107,6 +110,7 @@ public class TestShellBasedUnixGroupsMapping {
 
   @Test
   public void testGetGroupsNotResolvable() throws Exception {
+    Assume.assumeFalse(Shell.WINDOWS);
     TestGroupNotResolvable mapping = new TestGroupNotResolvable();
 
     List<String> groups = mapping.getGroups("user");

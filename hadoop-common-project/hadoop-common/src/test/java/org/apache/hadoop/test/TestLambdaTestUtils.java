@@ -140,7 +140,7 @@ public class TestLambdaTestUtils extends Assert {
     } catch (TimeoutException e) {
       int invocationCount = retry.getInvocationCount();
       assertTrue("invocation count only " +  invocationCount,
-          invocationCount > 4);
+          invocationCount > 1);
     }
   }
 
