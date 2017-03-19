@@ -602,7 +602,7 @@ public class TestWinUtils {
     try {
       jobId = String.format("%f", Math.random());
       out = Shell.execCommand(winutils, "task", "create", "-m", "128", "job"
-          + jobId, "java -Xmx256m -version");
+          + jobId, "java -Xmx2048 -version");
       fail("Failed to get Shell.ExitCodeException with insufficient memory,"
           + " got: \"" + out +'"');
     } catch (Shell.ExitCodeException ece) {
