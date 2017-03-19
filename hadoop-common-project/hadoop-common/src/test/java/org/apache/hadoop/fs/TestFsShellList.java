@@ -22,6 +22,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.test.GenericTestUtils;
 import org.apache.hadoop.util.Shell;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -44,8 +45,8 @@ public class TestFsShellList {
     lfs.setVerifyChecksum(true);
     lfs.setWriteChecksum(true);
 
-    String root = System.getProperty("test.build.data", "test/build/data");
-    testRootDir = lfs.makeQualified(new Path(root, "testFsShellList"));
+    String tempDir = GenericTestUtils.getTempPath("testFsShellList");
+    testRootDir = lfs.makeQualified(new Path(tempDir);
     assertThat(lfs.mkdirs(testRootDir), is(true));
   }
 
@@ -72,10 +73,9 @@ public class TestFsShellList {
     } else {
       paths = new String[]{"abc\bd\tef", "ghi", "qq\r123"};
     }
-
-    createFile(new Path(testRootDir, "abc\bd\tef"));
-    createFile(new Path(testRootDir, "ghi"));
-    createFile(new Path(testRootDir, "qq\r123"));
+    for (String p : paths) {
+      createFile(new Path(testRootDir, p));
+    }
     lsArgv = new String[]{"-ls", testRootDir.toString()};
     assertThat(shell.run(lsArgv), is(0));
 
