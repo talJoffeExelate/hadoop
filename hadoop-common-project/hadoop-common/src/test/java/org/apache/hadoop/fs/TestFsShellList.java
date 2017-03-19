@@ -25,8 +25,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.test.GenericTestUtils;
 import org.apache.hadoop.util.Shell;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Test FsShell -ls command.
@@ -46,7 +49,7 @@ public class TestFsShellList {
     lfs.setWriteChecksum(true);
 
     String tempDir = GenericTestUtils.getTempPath("testFsShellList");
-    testRootDir = lfs.makeQualified(new Path(tempDir);
+    testRootDir = lfs.makeQualified(new Path(tempDir));
     assertThat(lfs.mkdirs(testRootDir), is(true));
   }
 
@@ -56,10 +59,16 @@ public class TestFsShellList {
   }
 
   private void createFile(Path filePath) throws Exception {
-    FSDataOutputStream out = lfs.create(filePath);
-    out.writeChars("I am " + filePath);
-    out.close();
-    assertThat(lfs.exists(lfs.getChecksumFile(filePath)), is(true));
+    try {
+      FSDataOutputStream out = lfs.create(filePath);
+      out.writeChars("I am " + filePath);
+      out.close();
+    } catch (IOException e) {
+      throw new AssertionError("Failed to create \"" + filePath + "\": "
+          + e, e);
+    }
+    Assert.assertTrue("Path does not exist: " + filePath,
+        lfs.exists(lfs.getChecksumFile(filePath)));
   }
 
   @Test
