@@ -583,19 +583,19 @@ public class TestWinUtils {
     // Run a task without any options
     String out = Shell.execCommand(winutils, "task", "create",
         "job" + jobId, "cmd /c echo job" + jobId);
-    assertTrue(out.trim().equals("job" + jobId));
+    assertEquals("job" + jobId, out.trim());
 
     // Run a task without any limits
     jobId = String.format("%f", Math.random());
     out = Shell.execCommand(winutils, "task", "create", "-c", "-1", "-m",
         "-1", "job" + jobId, "cmd /c echo job" + jobId);
-    assertTrue(out.trim().equals("job" + jobId));
+    assertEquals("job" + jobId, out.trim());
 
     // Run a task with limits (128MB should be enough for a cmd)
     jobId = String.format("%f", Math.random());
     out = Shell.execCommand(winutils, "task", "create", "-c", "10000", "-m",
         "128", "job" + jobId, "cmd /c echo job" + jobId);
-    assertTrue(out.trim().equals("job" + jobId));
+    assertEquals("job" + jobId, out.trim());
 
     // Run a task without enough memory
     try {
@@ -612,7 +612,7 @@ public class TestWinUtils {
     //
     try {
       jobId = String.format("%f", Math.random());
-      Shell.execCommand(winutils, "task", "create", "-c", "-1", "-m",
+      out = Shell.execCommand(winutils, "task", "create", "-c", "-1", "-m",
           "-1", "foo", "job" + jobId, "cmd /c echo job" + jobId);
       fail("Failed to get Shell.ExitCodeException with bad parameters,"
           + " got: " + out);
@@ -622,7 +622,7 @@ public class TestWinUtils {
 
     try {
       jobId = String.format("%f", Math.random());
-      Shell.execCommand(winutils, "task", "create", "-c", "-m", "-1",
+      out = Shell.execCommand(winutils, "task", "create", "-c", "-m", "-1",
           "job" + jobId, "cmd /c echo job" + jobId);
       fail("Failed to get Shell.ExitCodeException with bad parameters, "
           + " got: " + out);
@@ -632,7 +632,7 @@ public class TestWinUtils {
 
     try {
       jobId = String.format("%f", Math.random());
-      Shell.execCommand(winutils, "task", "create", "-c", "foo",
+      out = Shell.execCommand(winutils, "task", "create", "-c", "foo",
           "job" + jobId, "cmd /c echo job" + jobId);
       fail("Failed to get Shell.ExitCodeException with bad parameters, "
           + " got: " + out);
