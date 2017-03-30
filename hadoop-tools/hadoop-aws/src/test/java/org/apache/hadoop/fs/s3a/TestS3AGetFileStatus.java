@@ -52,12 +52,11 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
     ObjectMetadata meta = new ObjectMetadata();
     meta.setContentLength(1L);
     meta.setLastModified(new Date(2L));
-    when(
-        getS3client().getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
+    when(s3.getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
       .thenReturn(meta);
-    FileStatus stat = getFs().getFileStatus(path);
+    FileStatus stat = fs.getFileStatus(path);
     assertNotNull(stat);
-    assertEquals(getFs().makeQualified(path), stat.getPath());
+    assertEquals(fs.makeQualified(path), stat.getPath());
     assertTrue(stat.isFile());
     assertEquals(meta.getContentLength(), stat.getLen());
     assertEquals(meta.getLastModified().getTime(), stat.getModificationTime());
@@ -67,17 +66,16 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
   public void testFakeDirectory() throws Exception {
     Path path = new Path("/dir");
     String key = path.toUri().getPath().substring(1);
-    when(
-        getS3client().getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
+    when(s3.getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
       .thenThrow(NOT_FOUND);
     ObjectMetadata meta = new ObjectMetadata();
     meta.setContentLength(0L);
-    when(getS3client().getObjectMetadata(argThat(
+    when(s3.getObjectMetadata(argThat(
         correctGetMetadataRequest(BUCKET, key + "/"))
     )).thenReturn(meta);
-    FileStatus stat = getFs().getFileStatus(path);
+    FileStatus stat = fs.getFileStatus(path);
     assertNotNull(stat);
-    assertEquals(getFs().makeQualified(path), stat.getPath());
+    assertEquals(fs.makeQualified(path), stat.getPath());
     assertTrue(stat.isDirectory());
   }
 
@@ -85,9 +83,9 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
   public void testImplicitDirectory() throws Exception {
     Path path = new Path("/dir");
     String key = path.toUri().getPath().substring(1);
-    when(getS3client().getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET,  key))))
+    when(s3.getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET,  key))))
       .thenThrow(NOT_FOUND);
-    when(getS3client().getObjectMetadata(argThat(
+    when(s3.getObjectMetadata(argThat(
       correctGetMetadataRequest(BUCKET, key + "/"))
     )).thenThrow(NOT_FOUND);
     ObjectListing objects = mock(ObjectListing.class);
@@ -95,10 +93,10 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
         Collections.singletonList("dir/"));
     when(objects.getObjectSummaries()).thenReturn(
         Collections.<S3ObjectSummary>emptyList());
-    when(getS3client().listObjects(any(ListObjectsRequest.class))).thenReturn(objects);
-    FileStatus stat = getFs().getFileStatus(path);
+    when(s3.listObjects(any(ListObjectsRequest.class))).thenReturn(objects);
+    FileStatus stat = fs.getFileStatus(path);
     assertNotNull(stat);
-    assertEquals(getFs().makeQualified(path), stat.getPath());
+    assertEquals(fs.makeQualified(path), stat.getPath());
     assertTrue(stat.isDirectory());
   }
 
@@ -106,10 +104,9 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
   public void testRoot() throws Exception {
     Path path = new Path("/");
     String key = path.toUri().getPath().substring(1);
-    when(
-        getS3client().getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
+    when(s3.getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
       .thenThrow(NOT_FOUND);
-    when(getS3client().getObjectMetadata(argThat(
+    when(s3.getObjectMetadata(argThat(
       correctGetMetadataRequest(BUCKET, key + "/")
     ))).thenThrow(NOT_FOUND);
     ObjectListing objects = mock(ObjectListing.class);
@@ -117,10 +114,10 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
         Collections.<String>emptyList());
     when(objects.getObjectSummaries()).thenReturn(
         Collections.<S3ObjectSummary>emptyList());
-    when(getS3client().listObjects(any(ListObjectsRequest.class))).thenReturn(objects);
-    FileStatus stat = getFs().getFileStatus(path);
+    when(s3.listObjects(any(ListObjectsRequest.class))).thenReturn(objects);
+    FileStatus stat = fs.getFileStatus(path);
     assertNotNull(stat);
-    assertEquals(getFs().makeQualified(path), stat.getPath());
+    assertEquals(fs.makeQualified(path), stat.getPath());
     assertTrue(stat.isDirectory());
     assertTrue(stat.getPath().isRoot());
   }
@@ -129,10 +126,9 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
   public void testNotFound() throws Exception {
     Path path = new Path("/dir");
     String key = path.toUri().getPath().substring(1);
-    when(
-        getS3client().getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
+    when(s3.getObjectMetadata(argThat(correctGetMetadataRequest(BUCKET, key))))
       .thenThrow(NOT_FOUND);
-    when(getS3client().getObjectMetadata(argThat(
+    when(s3.getObjectMetadata(argThat(
       correctGetMetadataRequest(BUCKET, key + "/")
     ))).thenThrow(NOT_FOUND);
     ObjectListing objects = mock(ObjectListing.class);
@@ -140,9 +136,9 @@ public class TestS3AGetFileStatus extends AbstractS3AMockTest {
         Collections.<String>emptyList());
     when(objects.getObjectSummaries()).thenReturn(
         Collections.<S3ObjectSummary>emptyList());
-    when(getS3client().listObjects(any(ListObjectsRequest.class))).thenReturn(objects);
+    when(s3.listObjects(any(ListObjectsRequest.class))).thenReturn(objects);
     exception.expect(FileNotFoundException.class);
-    getFs().getFileStatus(path);
+    fs.getFileStatus(path);
   }
 
   private Matcher<GetObjectMetadataRequest> correctGetMetadataRequest(
