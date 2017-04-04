@@ -270,8 +270,8 @@ public class S3AFileSystem extends FileSystem {
       LOG.debug("Using encryption {}", serverSideEncryptionAlgorithm);
       inputPolicy = S3AInputPolicy.getPolicy(
           conf.getTrimmed(INPUT_FADVISE, INPUT_FADV_NORMAL));
-      boolean committerEnabled = conf.getBoolean(CommitConstants.COMMITTER_ENABLED,
-          CommitConstants.DEFAULT_COMMITTER_ENABLED);
+      boolean committerEnabled = conf.getBoolean(CommitConstants.MAGIC_COMMITTER_ENABLED,
+          CommitConstants.DEFAULT_MAGIC_COMMITTER_ENABLED);
       if (committerEnabled) {
         LOG.info("S3Guard Committer is enabled");
       }
