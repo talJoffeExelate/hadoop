@@ -47,7 +47,7 @@ public abstract class AbstractLaunchableService extends AbstractService
   }
 
   /**
-   * {@inheritDoc}.
+   * {@inheritDoc}
    * <p>
    * The base implementation logs all arguments at the debug level,
    * then returns the passed in config unchanged.
@@ -66,7 +66,7 @@ public abstract class AbstractLaunchableService extends AbstractService
   }
 
   /**
-   * {@inheritDoc}.
+   * {@inheritDoc}
    * <p>
    * The action is to signal success by returning the exit code 0.
    */

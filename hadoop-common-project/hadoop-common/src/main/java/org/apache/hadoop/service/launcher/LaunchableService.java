@@ -67,7 +67,7 @@ public interface LaunchableService extends Service {
         throws Exception;
 
   /**
-   * Run a service -called after {@link Service#start()}.
+   * Run a service. This method is called after {@link Service#start()}.
    * <p>
    * The return value becomes the exit code of the launched process.
    * <p>
@@ -81,7 +81,7 @@ public interface LaunchableService extends Service {
    *   A new {@link ServiceLaunchException} is created with the exit code
    *   and message of the thrown exception; the thrown exception becomes the
    *   cause.</li>
-   *   <li>Any other exception. A new {@link ServiceLaunchException} is created 
+   *   <li>Any other exception: a new {@link ServiceLaunchException} is created
    *   with the exit code {@link LauncherExitCodes#EXIT_EXCEPTION_THROWN} and
    *   the message of the original exception (which becomes the cause).</li>
    * </ol>

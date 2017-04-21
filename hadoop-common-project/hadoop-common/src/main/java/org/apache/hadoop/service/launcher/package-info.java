@@ -40,7 +40,7 @@
  <b>Extended YARN Service Interface</b>:<p>
  The {@link org.apache.hadoop.service.launcher.LaunchableService} interface
  extends {@link org.apache.hadoop.service.Service} with methods to pass
- down the CLI arguments, to execute an operation without having to
+ down the CLI arguments and to execute an operation without having to
  spawn a thread in the  {@link org.apache.hadoop.service.Service#start()} phase.
   
 
@@ -56,17 +56,18 @@
  shuts down any service via the hadoop shutdown mechanism.
  The {@link org.apache.hadoop.service.launcher.InterruptEscalator} can be
  registered to catch interrupts, triggering the shutdown -and forcing a JVM
- exit if it times our or a second interrupt is received.
+ exit if it times out or a second interrupt is received.
 
  <p><b>Tests:</b><p> test cases include interrupt handling and
  lifecycle failures.
 
  <h2>Launching a YARN Service</h2>
 
- The Service Launcher can launch <i>any YARN service</i>. It will instantiate
- the service classname provided, by zero-args constructor. Or, if none
- is available, falling back to a constructor that takes a {@code String}
- as its parameter, on the assumption that the parameter is the service name.
+ The Service Launcher can launch <i>any YARN service</i>.
+ It will instantiate the service classname provided, using the no-args
+ constructor, or if no such constructor is available, it will fall back
+ to a constructor with a single {@code String} parameter,
+ passing the service name as the parameter value.
  <p>
 
  The launcher will initialize the service via
@@ -78,12 +79,12 @@
  {@link org.apache.hadoop.service.Service#getFailureCause()} is interpreted
  as a failure, and, if it didn't happen during the stop phase (i.e. when
  {@link org.apache.hadoop.service.Service#getFailureState()} is not
- {@code STATE.STOPPED}, escalated into a non-zero return code.
+ {@code STATE.STOPPED}, escalated into a non-zero return code).
  <p>
  
- To view the worklow in sequence, it is:
+ To view the workflow in sequence, it is:
  <ol>
- <li>(prepare configuration files -covered later)</li>
+ <li>(prepare configuration files &mdash;covered later)</li>
  <li>instantiate service via its empty or string constructor</li>
  <li>call {@link org.apache.hadoop.service.Service#init(Configuration)}</li>
  <li>call {@link org.apache.hadoop.service.Service#start()}</li>
@@ -108,17 +109,18 @@
  as a long-lived daemon.
  The service launcher will never terminate, but neither will the service.
  The service launcher does register signal handlers to catch {@code kill}
- and control-C signals -calling {@code stop()} on the service when signalled.
- This means that a daemon service <i>may</i> get some warning and time to shut
+ and control-C signals &mdash;calling {@code stop()} on the service when
+ signaled.
+ This means that a daemon service <i>may</i> get a warning and time to shut
  down.
 
  <p>
  To summarize: provided a service launches its long-lived threads in its Service
  {@code start()} method, the service launcher can create it, configure it
- and start it -triggering shutdown when signalled.
+ and start it, triggering shutdown when signaled.
 
  What these services can not do is get at the command line parameters or easily
- propagate exit codes (there is way covered later). These features require
+ propagate exit codes (there is a way covered later). These features require
  some extensions to the base {@code Service} interface: <i>the Launchable
  Service</i>.
 
@@ -127,7 +129,7 @@
  A Launchable YARN Service is a YARN service which implements the interface
  {@link org.apache.hadoop.service.launcher.LaunchableService}. 
  <p>
- It adds two methods to the service interface -and hence two new features: 
+ It adds two methods to the service interface &mdash;and hence two new features:
 
  <ol>
  <li>Access to the command line passed to the service launcher </li>
@@ -137,7 +139,7 @@
 
  This design is ideal for implementing services which parse the command line,
  and which execute short-lived applications. For example, end user 
- commands can be implemented as such services, so integrating with YARN's
+ commands can be implemented as such services, thus integrating with YARN's
  workflow and {@code YarnClient} client-side code.  
 
  <p>
@@ -157,7 +159,7 @@
  This method <i>is called before
  {@link org.apache.hadoop.service.Service#init(Configuration)}.</i>
  This is by design: it allows the arguments to be parsed before the service is
- initialized, so allowing services to tune their configuration data before
+ initialized, thus allowing services to tune their configuration data before
  passing it to any superclass in that {@code init()} method.
  To make this operation even simpler, the
  {@link org.apache.hadoop.conf.Configuration} that is to be passed in
@@ -168,8 +170,8 @@
  In
  {@link org.apache.hadoop.service.launcher.LaunchableService#bindArgs(Configuration, List)},
  a Launchable Service may manipulate this configuration by setting or removing
- properties. It may also create a new Configuration instance
- -which may be needed to trigger the injection of HDFS or YARN resources
+ properties. It may also create a new {@code Configuration} instance
+ which may be needed to trigger the injection of HDFS or YARN resources
  into the default resources of all Configurations.
  If the return value of the method call is a configuration
  reference (as opposed to a null value), the returned value becomes that
@@ -188,14 +190,14 @@
  After this {@code execute()} operation completes, the
  service is stopped and exit codes generated. Any exception raised
  during the {@code execute()} method takes priority over any exit codes
- returned by the method -so services may signal failures simply by returning
- exceptions with exit codes.
+ returned by the method. This allows services to signal failures simply
+ by raising exceptions with exit codes.
  <p>
 
  <p>
  To view the workflow in sequence, it is:
  <ol>
- <li>(prepare configuration files --covered later)</li>
+ <li>(prepare configuration files &mdash;covered later)</li>
  <li>instantiate service via its empty or string constructor</li>
  <li>call {@link org.apache.hadoop.service.launcher.LaunchableService#bindArgs(Configuration, List)}</li>
  <li>call {@link org.apache.hadoop.service.Service#init(Configuration)} with the existing config,
@@ -214,7 +216,7 @@
  </ol>
 
 
- <h2>Exit codes and Exceptions</h2>
+ <h2>Exit Codes and Exceptions</h2>
 
  <p>
  For a basic service, the return code is 0 unless an exception
@@ -227,10 +229,10 @@
 
  <p>
  Exceptions are converted into exit codes -but rather than simply
- have a "something went wrong" exit code , exceptions <i>may</i>
+ have a "something went wrong" exit code, exceptions <i>may</i>
  provide exit codes which will be extracted and used as the return code.
- This enables LaunchableServices to use exceptions as a way
- of returning error codes to signal failures -and for 
+ This enables Launchable Services to use exceptions as a way
+ of returning error codes to signal failures and for
  normal Services to return any error code at all.
 
  <p>
@@ -261,7 +263,7 @@
  interface listing common exception codes. These are exception codes
  that can be raised by the {@link org.apache.hadoop.service.launcher.ServiceLauncher}
  itself to indicate problems during parsing the command line, creating
- the service instance and such like. There are also some common exit codes
+ the service instance and the like. There are also some common exit codes
  for Hadoop/YARN service failures, such as
  {@link org.apache.hadoop.service.launcher.LauncherExitCodes#EXIT_UNAUTHORIZED}.
  Note that {@link org.apache.hadoop.util.ExitUtil.ExitException} itself
@@ -279,7 +281,7 @@
  <ol>
  <li>If no exception was triggered by a basic service, a
  {@link org.apache.hadoop.service.launcher.ServiceLaunchException} with an
- exit code of 0 s created.</li>
+ exit code of 0 is created.</li>
 
  <li>For a LaunchableService, the exit code is the result of {@code execute()}
  Again, a {@link org.apache.hadoop.service.launcher.ServiceLaunchException}
@@ -337,7 +339,7 @@
  The {@link org.apache.hadoop.service.launcher.ServiceLauncher} also registers
  a {@link org.apache.hadoop.service.launcher.ServiceShutdownHook} with the
  Hadoop shutdown hook manager, unregistering it afterwards. This hook will
- stop the service if a shutdown request is received -so ensuring that 
+ stop the service if a shutdown request is received, so ensuring that
  if the JVM is exited by any thread, an attempt to shut down the service
  will be made.
  
@@ -351,7 +353,7 @@
  of {@code HdfsConfiguration} or {@code YarnConfiguration}.
  <p>
  What the launcher does do is use reflection to try and create instances of
- these classes -simply to force in the common resources. If the classes are
+ these classes simply to force in the common resources. If the classes are
  not on the classpath this fact will be logged.
  <p>
  Applications may consider it essential to either force load in the relevant
@@ -425,7 +427,7 @@
  {@link org.apache.hadoop.service.launcher.ServiceLauncher#createConfiguration()}
  method.
  If this argument is repeated multiple times, all configuration
- files are merged -with the latest file on the command line being the 
+ files are merged with the latest file on the command line being the
  last one to be applied.
  <p>
  All the {@code --conf &lt;file&gt;} argument pairs are stripped off

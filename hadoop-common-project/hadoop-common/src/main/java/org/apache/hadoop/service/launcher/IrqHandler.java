@@ -29,7 +29,7 @@ import sun.misc.SignalHandler;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Handler of interrupts -relays them to a registered
+ * Handler of interrupts that relays them to a registered
  * implementation of {@link IrqHandler.Interrupted}.
  *
  * This class bundles up all the compiler warnings about abuse of sun.misc

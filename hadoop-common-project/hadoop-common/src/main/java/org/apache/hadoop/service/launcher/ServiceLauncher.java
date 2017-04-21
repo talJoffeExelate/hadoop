@@ -61,14 +61,12 @@ import java.util.List;
  *   <li>Otherwise: it waits for the service to stop, assuming that the
  *   {@link Service#start()} method spawns one or more thread
  *   to perform work</li>
- *   <li>If any exception is raised and provides an exit code
- *   -that is, it implements {@link ExitCodeProvider},
- *   that becomes the exit code of the command.</li>
+ *   <li>If any exception is raised and provides an exit code,
+ *   that is, it implements {@link ExitCodeProvider},
+ *   the return value of {@link ExitCodeProvider#getExitCode()},
+ *   becomes the exit code of the command.</li>
  * </ol>
- * Error and warning messages are logged to stderr. If the classpath
- * is wrong and logger configurations not on it, then no error messages by
- * the started app will be seen and the caller is left trying to debug
- * using exit codes. 
+ * Error and warning messages are logged to {@code stderr}.
  * 
  * @param <S> service class to cast the generated service to.
  */
@@ -235,7 +233,7 @@ public class ServiceLauncher<S extends Service>
   /**
    * Get the exit exception used to end this service.
    * @return an exception, which will be null until the service
-   * has exited (and <code>System.exit</code> has not been called)
+   * has exited (and {@code System.exit} has not been called)
    */
   public final ExitUtil.ExitException getServiceException() {
     return serviceException;
@@ -274,7 +272,7 @@ public class ServiceLauncher<S extends Service>
    * <li>Exit passing the status code to the {@link #exit(int, String)}
    * method.</li>
    * </ol>
-   * @param args arguments to the service. <code>arg[0]</code> is 
+   * @param args arguments to the service. {@code arg[0]} is 
    * assumed to be the service classname.
    */
   public void launchServiceAndExit(List<String> args) {
@@ -322,8 +320,8 @@ public class ServiceLauncher<S extends Service>
   }
 
   /**
-   * An exception has been raised.
-   * Save it to {@link #serviceException}, with the exit code in
+   * Record that an Exit Exception has been raised.
+   * Save it to {@link #serviceException}, with its exit code in
    * {@link #serviceExitCode}
    * @param exitException exception
    */
@@ -352,7 +350,7 @@ public class ServiceLauncher<S extends Service>
    * standard options set.
    * <i>Important. Synchronize uses of {@link OptionBuilder}</i>
    * with {@code OptionBuilder.class}
-   * @return the new options.
+   * @return the new options
    */
   @SuppressWarnings("static-access")
   protected Options createOptions() {
@@ -405,7 +403,7 @@ public class ServiceLauncher<S extends Service>
    * {@link #getConfigurationsToCreate()} , ensuring that
    * the resources have been pushed in.
    * If one cannot be loaded it is logged and the operation continues
-   * -except in the case that the class does load but it isn't actually
+   * except in the case that the class does load but it isn't actually
    * a subclass of {@link Configuration}.
    * @throws ExitUtil.ExitException if a loaded class is of the wrong type
    */
@@ -599,11 +597,11 @@ public class ServiceLauncher<S extends Service>
   }
 
   /**
-   * Instantiate the service defined in <code>serviceClassName</code>.
+   * Instantiate the service defined in {@code serviceClassName}.
    *
-   * Sets the <code>configuration</code> field
-   * to the the value of <code>conf</code>,
-   * and the <code>service</code> field to the service created.
+   * Sets the {@code configuration} field
+   * to the the value of {@code conf},
+   * and the {@code service} field to the service created.
    *
    * @param conf configuration to use
    */
@@ -646,7 +644,7 @@ public class ServiceLauncher<S extends Service>
   }
 
   /**
-   * Convert an exception to an <code>ExitException</code>.
+   * Convert an exception to an {@code ExitException}.
    *
    * This process may just be a simple pass through, otherwise a new
    * exception is created with an exit code, the text of the supplied
@@ -661,7 +659,7 @@ public class ServiceLauncher<S extends Service>
    * </ol>
    *  
    * @param thrown the exception thrown
-   * @return an <code>ExitException</code> with a status code
+   * @return an {@code ExitException} with a status code
    */
   protected static ExitUtil.ExitException convertToExitException(
       Throwable thrown) {
@@ -700,7 +698,8 @@ public class ServiceLauncher<S extends Service>
   }
   
   /**
-   * Register this class as the handler for the control-C interrupt.
+   * Override point: register this class as the handler for the control-C
+   * and SIGINT interrupts.
    *
    * Subclasses can extend this with extra operations, such as
    * an exception handler:
@@ -775,11 +774,10 @@ public class ServiceLauncher<S extends Service>
   /**
    * Report an error. 
    * <p>
-   * This tries to log to <code>LOG.error()</code>.
+   * This tries to log to {@code LOG.error()}.
    * <p>
    * If that log level is disabled disabled the message
-   * is logged to system error along
-   * with <code>thrown.toString()</code>
+   * is logged to system error along with {@code thrown.toString()}
    * @param message message for the user
    * @param thrown the exception thrown
    */
@@ -800,7 +798,7 @@ public class ServiceLauncher<S extends Service>
    *
    * This is method can be overridden for testing, throwing an 
    * exception instead. Any subclassed method MUST raise an 
-   * <code>ExitException</code> instance/subclass.
+   * {@code ExitException} instance/subclass.
    * The service launcher code assumes that after this method is invoked,
    * no other code in the same method is called.
    * @param exitCode code to exit
@@ -810,15 +808,16 @@ public class ServiceLauncher<S extends Service>
   }
 
   /**
-   * Exit the JVM using an exception for the exit code and message.
+   * Exit the JVM using an exception for the exit code and message,
+   * invoking {@link ExitUtil#terminate(ExitUtil.ExitException)}.
    *
    * This is the standard way a launched service exits.
    * An error code of 0 means success -nothing is printed.
    *
-   * By default, calls
-   * {@link ExitUtil#terminate(ExitUtil.ExitException)}.
+   * If {@link ExitUtil#disableSystemExit()} has been called, this
+   * method will return to the caller.
    *
-   * This can be subclassed for testing
+   * The method <i>may</i> be subclassed for testing
    * @param ee exit exception
    */
   protected void exit(ExitUtil.ExitException ee) {
@@ -838,7 +837,7 @@ public class ServiceLauncher<S extends Service>
    * building an array of processed arguments to hand down to the service.
    *
    * @param conf configuration to update.
-   * @param args main arguments. <code>args[0]</code>is assumed to be
+   * @param args main arguments. {@code args[0]}is assumed to be
    * the service classname and is skipped.
    * @return the remaining arguments
    * @throws ExitUtil.ExitException if JVM exiting is disabled.
@@ -995,7 +994,7 @@ public class ServiceLauncher<S extends Service>
 
   /**
    * Varargs version of the entry point for testing and other in-JVM use.
-   * -hands off to {@link #serviceMain(List)}
+   * Hands off to {@link #serviceMain(List)}
    * @param args command line arguments.
    */
   public static void serviceMain(String... args) {
