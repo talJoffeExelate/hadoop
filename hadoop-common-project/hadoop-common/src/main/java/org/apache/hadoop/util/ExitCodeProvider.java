@@ -31,5 +31,5 @@ public interface ExitCodeProvider {
    * Method to get the exit code.
    * @return the exit code
    */
-  int  getExitCode();
+  int getExitCode();
 }

@@ -137,7 +137,7 @@ public class TestServiceConf
       fileWriter.close();
     }
     assertLaunchOutcome(EXIT_COMMAND_ARGUMENT_ERROR,
-        "SAXParseException",
+        "",
         RunningService.NAME,
         ARG_CONF_PREFIXED,
         file.getAbsolutePath());

@@ -18,12 +18,12 @@
 
 package org.apache.hadoop.service.launcher;
 
+import java.util.List;
+
 import org.apache.hadoop.classification.InterfaceAudience;
 import org.apache.hadoop.classification.InterfaceStability;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.service.Service;
-
-import java.util.List;
 
 /**
  * An interface which services can implement to have their

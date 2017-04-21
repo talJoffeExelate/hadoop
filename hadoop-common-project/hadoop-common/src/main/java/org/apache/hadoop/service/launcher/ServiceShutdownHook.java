@@ -18,31 +18,24 @@
 
 package org.apache.hadoop.service.launcher;
 
+import java.lang.ref.WeakReference;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.hadoop.classification.InterfaceAudience;
 import org.apache.hadoop.classification.InterfaceStability;
 import org.apache.hadoop.service.Service;
 import org.apache.hadoop.util.ShutdownHookManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.ref.WeakReference;
 
 /**
  * JVM Shutdown hook for Service which will stop the
  * Service gracefully in case of JVM shutdown.
- * This hook uses a weak reference to the service, so
- * does not cause services to be retained after they have
- * been stopped and deferenced elsewhere.
+ * This hook uses a weak reference to the service,
+ * and when shut down, calls {@link Service#stop()} if the reference is valid.
  */
 @InterfaceAudience.Private
 @InterfaceStability.Unstable
-
-/**
- * A service shutdown hook.
- * <p>
- *   It stores a weak reference to a service, and, when shut down,
- *   calls {@link Service#stop()} if the reference is valid.
- */
 public class ServiceShutdownHook implements Runnable {
   private static final Logger LOG = LoggerFactory.getLogger(
       ServiceShutdownHook.class);

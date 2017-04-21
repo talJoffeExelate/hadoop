@@ -456,7 +456,7 @@
 
 package org.apache.hadoop.service.launcher;
 
+import java.util.List;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.util.ExitUtil;
-
-import java.util.List;

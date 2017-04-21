@@ -18,15 +18,16 @@
 
 package org.apache.hadoop.service.launcher;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.google.common.base.Preconditions;
-import org.apache.hadoop.classification.InterfaceAudience;
-import org.apache.hadoop.classification.InterfaceStability;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.hadoop.classification.InterfaceAudience;
+import org.apache.hadoop.classification.InterfaceStability;
 
 /**
  * Handler of interrupts that relays them to a registered

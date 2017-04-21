@@ -19,12 +19,12 @@
 package org.apache.hadoop.service.launcher;
 
 
+import java.util.Locale;
+
 import org.apache.hadoop.classification.InterfaceAudience;
 import org.apache.hadoop.classification.InterfaceStability;
 import org.apache.hadoop.util.ExitCodeProvider;
 import org.apache.hadoop.util.ExitUtil;
-
-import java.util.Locale;
 
 /**
  * A service launch exception that includes an exit code.

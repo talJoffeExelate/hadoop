@@ -18,8 +18,18 @@
 
 package org.apache.hadoop.service.launcher;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
@@ -31,15 +41,6 @@ import org.apache.hadoop.util.ExitCodeProvider;
 import org.apache.hadoop.util.ExitUtil;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.hadoop.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A class to launch any YARN service by name.
@@ -78,8 +79,8 @@ public class ServiceLauncher<S extends Service>
   /**
    * Logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(
-      ServiceLauncher.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(ServiceLauncher.class);
 
   /**
    * Priority for the shutdown hook: {@value}.
@@ -98,7 +99,7 @@ public class ServiceLauncher<S extends Service>
   /**
    * Usage message.
    *
-   * {@value}
+   * Text: {@value}
    */
   public static final String USAGE_MESSAGE =
       USAGE_NAME
@@ -127,7 +128,7 @@ public class ServiceLauncher<S extends Service>
   private int serviceExitCode;
   
   /**
-   * Exception raised during execution.
+   * Any exception raised during execution.
    */
   private ExitUtil.ExitException serviceException;
 
@@ -153,6 +154,7 @@ public class ServiceLauncher<S extends Service>
 
   /**
    * List of the standard configurations to create (and so load in properties).
+   * The values are Hadoop, HDFS and YARN configurations.
    */
   protected static final String[] DEFAULT_CONFIGS = {
       "org.apache.hadoop.conf.Configuration",
@@ -417,13 +419,14 @@ public class ServiceLauncher<S extends Service>
         Object instance = loadClass.getConstructor().newInstance();
         if (!(instance instanceof Configuration)) {
           throw new ExitUtil.ExitException(EXIT_SERVICE_CREATION_FAILURE,
-              "Could not create "+ classname
-              + "- it is not a Configuration class/subclass");
+              "Could not create " + classname
+              + " because it is not a Configuration class/subclass");
         }
         loaded++;
       } catch (ClassNotFoundException e) {
         // class could not be found -implies it is not on the current classpath
-        LOG.debug("Failed to load {} -it is not on the classpath", classname);
+        LOG.debug("Failed to load {} because it is not on the classpath",
+            classname);
       } catch (ExitUtil.ExitException e) {
         // rethrow
         throw e;
@@ -545,11 +548,11 @@ public class ServiceLauncher<S extends Service>
     LaunchableService launchableService = null;
 
     if (service instanceof LaunchableService) {
-      // it's a launchedService, pass in the conf and arguments before init)
-      LOG.debug("Service {} implements LaunchedService", name);
+      // it's a LaunchableService, pass in the conf and arguments before init)
+      LOG.debug("Service {} implements LaunchableService", name);
       launchableService = (LaunchableService) service;
       if (launchableService.isInState(Service.STATE.INITED)) {
-        LOG.warn("LaunchedService {}" 
+        LOG.warn("LaunchableService {}" 
             + " initialized in constructor before CLI arguments passed in",
             name);
       }
@@ -815,10 +818,11 @@ public class ServiceLauncher<S extends Service>
    * An error code of 0 means success -nothing is printed.
    *
    * If {@link ExitUtil#disableSystemExit()} has been called, this
-   * method will return to the caller.
+   * method will throw the exception.
    *
    * The method <i>may</i> be subclassed for testing
    * @param ee exit exception
+   * @throws ExitUtil.ExitException if ExitUtil exceptions are disabled
    */
   protected void exit(ExitUtil.ExitException ee) {
     ExitUtil.terminate(ee);
@@ -956,8 +960,8 @@ public class ServiceLauncher<S extends Service>
    * @param classname the class of the server
    * @param args arguments
    */
-  public static String startupShutdownMessage(String classname,
-                                              List<String> args) {
+  protected static String startupShutdownMessage(String classname,
+      List<String> args) {
     final String hostname = NetUtils.getHostname();
 
     return StringUtils.createStartupShutdownMessage(classname, hostname,
@@ -970,15 +974,16 @@ public class ServiceLauncher<S extends Service>
    * @param message message message to print before exiting
    * @throws ExitUtil.ExitException if exceptions are disabled
    */
-  public static void exitWithMessage(int status, String message) {
+  protected static void exitWithMessage(int status, String message) {
     ExitUtil.terminate(new ServiceLaunchException(status, message));
   }
 
   /**
-   * Exit with the usage exit code and message.
+   * Exit with the usage exit code {@link #EXIT_USAGE}
+   * and message {@link #USAGE_MESSAGE}.
    * @throws ExitUtil.ExitException if exceptions are disabled
    */
-  public static void exitWithUsageMessage() {
+  protected static void exitWithUsageMessage() {
     exitWithMessage(EXIT_USAGE, USAGE_MESSAGE);
   }
 
@@ -1004,10 +1009,6 @@ public class ServiceLauncher<S extends Service>
   /* ====================================================================== */
   /**
    * The real main function, which takes the arguments as a list.
-   * <ol>
-   *   <li>-conf &lt;file&gt; : configuration file</li>
-   * </ol>
-   *
    * Argument 0 MUST be the service classname
    * @param argsList the list of arguments
    */
